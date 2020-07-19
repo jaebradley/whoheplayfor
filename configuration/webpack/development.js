@@ -1,0 +1,13 @@
+const { merge } = require('webpack-merge');
+
+const base = require('./base');
+
+module.exports = merge(base, {
+  mode: 'development',
+  devtool: 'eval-cheap-module-source-map',
+  devServer: {
+    compress: true,
+    port: 2020,
+    hot: true
+  }
+});
