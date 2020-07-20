@@ -7,7 +7,7 @@
   "scripts": {
     "start": "npx webpack-dev-server --config configuration/webpack/development.js",
     "build:prod": "npx webpack --config configuration/webpack/production.js",
-    "deploy": "npx gh-pages -d build",
+    "deploy": "npx gh-pages -d dist",
     "lint": "npx eslint '*/**/*.{js,jsx,ts,tsx}' --fix",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
