@@ -1,4 +1,4 @@
-import { Player } from '../types';
+import { Player } from '@Src/types';
 
 const DIFFICULTY_LEVEL_TO_PLAYER_POOL_RATIO = new Map([
   ['ALL', 1],

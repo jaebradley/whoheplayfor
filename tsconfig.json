@@ -16,7 +16,8 @@
     "strictNullChecks": true,
     "paths": {
       "react-dom/*": ["./node_modules/@hot-loader/react-dom/*"],
-      "@App/*": ["./src/App/*"]
+      "@App/*": ["./src/App/*"],
+      "@Src/*": ["./src/*"]
     }
   },
   "exclude": [
