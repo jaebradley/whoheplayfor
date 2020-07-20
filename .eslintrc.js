@@ -20,9 +20,10 @@ module.exports = {
     sourceType:  'module'
   },
   settings:  {
+    'import/ignore': ['node_modules'],
     'import/resolver': {
       webpack: {
-        config: 'configuration/webpack/base.js'
+        config: './configuration/webpack/base.js'
       }
     },
     react:  {
