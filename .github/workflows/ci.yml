@@ -62,9 +62,9 @@ jobs:
           git config user.email "${GH_EMAIL}"
           git remote set-url origin ${REMOTE}
         env:
-          - GH_TOKEN: ${{ secrets.GH_TOKEN }}
-          - GH_NAME: ${{ secrets.GH_NAME }}
-          - GH_EMAIL: ${{ secrets.GH_EMAIL }}
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+          GH_NAME: ${{ secrets.GH_NAME }}
+          GH_EMAIL: ${{ secrets.GH_EMAIL }}
       - name: Deploy to GitHub Pages
         run: npm run deploy
         env:
