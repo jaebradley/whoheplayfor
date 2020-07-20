@@ -10,7 +10,7 @@ export default function useFetchPlayers(): { loading: boolean; error: Error; pla
     [],
   );
   const players = React.useMemo(() => {
-    if (data && data.resultSet && data.resultSet.rowSet) {
+    if (data?.resultSet?.rowSet) {
       return data.resultSet.rowSet.map((row: [number, number, string, string, number, number]) => {
         const [id, , name, teamAbbreviation, gamesPlayed, minutesPlayed] = row;
         return {
