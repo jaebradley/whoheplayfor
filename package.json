@@ -28,6 +28,7 @@
     "@hot-loader/react-dom": "^16.13.0",
     "axios": "^0.19.2",
     "core-js": "^3.6.5",
+    "fuse.js": "^6.4.0",
     "prop-types": "^15.7.2",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
