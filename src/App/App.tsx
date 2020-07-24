@@ -1,12 +1,14 @@
 import * as React from 'react';
 import { useRecoilState, atom } from 'recoil/dist';
 import styled from 'styled-components';
+import { set } from 'idb-keyval';
 
 import PlayerImage from '@App/PlayerImage';
 import useFetchPlayers from '@App/hooks/useFetchPlayers';
 import selectRandomPlayer from '@App/selectRandomPlayer';
 
 import { Player } from '@Src/types';
+import seenPlayersStore from '@Src/seenPlayersStore';
 
 import Header from './Header';
 import Teams from './Teams';
@@ -30,7 +32,9 @@ function App(): React.ReactElement {
   const handleSelectClick = React.useCallback(() => {
     const player = selectRandomPlayer({ players, difficultyLevel: 'ALL' });
     if (player) {
-      setPlayer(player);
+      set(player.id, player.name, seenPlayersStore)
+        .then(() => setPlayer(player))
+        .catch(e => console.log('unable to set player in index db', player, e))
     }
   }, [setPlayer, players]);
 
