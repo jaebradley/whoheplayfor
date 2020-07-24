@@ -13,3 +13,16 @@ ReactDOM.render(
   </RecoilRoot>,
   document.getElementById('root') as HTMLElement,
 );
+
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker
+      .register('/serviceWorker.js')
+      .then((registration) => {
+        console.log('SW registered', registration);
+      })
+      .catch((error) => {
+        console.log('error', error);
+      });
+  });
+}

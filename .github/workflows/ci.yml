@@ -65,6 +65,7 @@ jobs:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
           GH_NAME: ${{ secrets.GH_NAME }}
           GH_EMAIL: ${{ secrets.GH_EMAIL }}
+          PUBLIC_URL: ${{ secrets.PUBLIC_URL }}
       - name: Deploy to GitHub Pages
         run: npm run deploy
         env:
