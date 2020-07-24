@@ -1,7 +1,7 @@
 import * as React from 'react';
 import useFetch from 'use-http';
 
-import { Player } from '../../types';
+import { Player } from '@Src/types';
 
 export default function useFetchPlayers(): { loading: boolean; error: Error; players: Player[] } {
   const { loading, error, data } = useFetch(
