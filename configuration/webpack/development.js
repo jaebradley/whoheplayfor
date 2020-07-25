@@ -4,7 +4,9 @@ const base = require('./base');
 
 module.exports = merge(base, {
   mode: 'development',
-  filename: '[name].[hash].js',
+  output: {
+    filename: '[name].[hash].js',
+  },
   devtool: 'eval-cheap-module-source-map',
   devServer: {
     compress: true,
