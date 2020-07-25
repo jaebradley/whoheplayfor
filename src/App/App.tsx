@@ -5,13 +5,16 @@ import { set } from 'idb-keyval';
 
 import PlayerImage from '@App/PlayerImage';
 import useFetchPlayers from '@App/hooks/useFetchPlayers';
-import selectRandomPlayer from '@App/selectRandomPlayer';
+import useGetNextPlayer from '@App/hooks/useGetNextPlayer';
 
 import { Player } from '@Src/types';
 import seenPlayersStore from '@Src/seenPlayersStore';
+import shuffle from '@Src/shuffle';
 
 import Header from './Header';
 import Teams from './Teams';
+import generatePlayerImageURL from '@App/generatePlayerImageURL';
+import { PlayerIteratorResult } from '@Src/makePlayersIterator';
 
 function App(): React.ReactElement {
   const playerState = atom({
@@ -20,23 +23,23 @@ function App(): React.ReactElement {
   });
   const [player, setPlayer] = useRecoilState<Player | null>(playerState);
   const { loading, error, players } = useFetchPlayers();
-
-  React.useEffect(() => {
-    const player = selectRandomPlayer({ players, difficultyLevel: 'ALL' });
-    if (player) {
-      setPlayer(player);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  const shuffledPlayers = React.useMemo(() => shuffle(players), [players]);
+  const getNextPlayer = useGetNextPlayer({ players: shuffledPlayers });
 
   const handleSelectClick = React.useCallback(() => {
-    const player = selectRandomPlayer({ players, difficultyLevel: 'ALL' });
-    if (player) {
-      set(player.id, player.name, seenPlayersStore)
-        .then(() => setPlayer(player))
-        .catch(e => console.log('unable to set player in index db', player, e))
-    }
-  }, [setPlayer, players]);
+    getNextPlayer().then(({ currentPlayer, nextPlayer }: PlayerIteratorResult) => {
+      if (currentPlayer) {
+        set(currentPlayer.id, currentPlayer.name, seenPlayersStore)
+          .then(() => {
+            if (nextPlayer) {
+              new Image().src = generatePlayerImageURL({ playerId: nextPlayer.id });
+            }
+          })
+          .then(() => setPlayer(currentPlayer))
+          .catch((e) => console.log('unable to set player in index db', currentPlayer, e));
+      }
+    });
+  }, [getNextPlayer, setPlayer]);
 
   if (loading) {
     return <div>Loading</div>;
