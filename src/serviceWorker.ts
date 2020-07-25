@@ -1,5 +1,5 @@
 import { registerRoute } from 'workbox-routing';
-import { CacheFirst } from 'workbox-strategies';
+import { CacheFirst, NetworkFirst } from 'workbox-strategies';
 import { CacheableResponsePlugin } from 'workbox-cacheable-response';
 import { precacheAndRoute } from 'workbox-precaching';
 import { skipWaiting, clientsClaim } from 'workbox-core';
@@ -26,7 +26,7 @@ registerRoute(
 
 registerRoute(
   ({ url }) => url.origin === 'https://stats.nba.com' && url.pathname.startsWith('/media/img/teams/logos'),
-  new CacheFirst({
+  new NetworkFirst({
     cacheName: 'team-images-cache',
     plugins: [
       new CacheableResponsePlugin({

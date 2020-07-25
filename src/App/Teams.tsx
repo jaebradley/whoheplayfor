@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import Fuse from 'fuse.js';
 
 import TEAMS from '@Src/teams';
-import TeamLogo from '@App/TeamLogo';
+import Team from '@App/Team';
 
 const TEAM_VALUES = Array.from(TEAMS.entries()).map(([, team]) => team);
 const fuse = new Fuse(TEAM_VALUES, { keys: ['name', 'abbreviation'] });
@@ -28,7 +28,7 @@ function Teams(): React.ReactElement {
       <input type="text" onChange={handleSearchTermChange} />
       <StyledTeams>
         {filteredTeams.map((team) => (
-          <TeamLogo key={team.id} team={team} size="5rem" />
+          <Team key={team.id} team={team} />
         ))}
       </StyledTeams>
     </>

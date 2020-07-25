@@ -1,26 +1,25 @@
 import * as React from 'react';
-import { useRecoilState, atom } from 'recoil/dist';
+import { useRecoilState, useRecoilValue } from 'recoil/dist';
 import styled from 'styled-components';
 import { set } from 'idb-keyval';
 
 import PlayerImage from '@App/PlayerImage';
 import useFetchPlayers from '@App/hooks/useFetchPlayers';
 import useGetNextPlayer from '@App/hooks/useGetNextPlayer';
+import generatePlayerImageURL from '@App/generatePlayerImageURL';
+import { playerState } from '@App/atoms';
+import { resultSelector } from '@App/selectors';
 
 import { Player } from '@Src/types';
 import seenPlayersStore from '@Src/seenPlayersStore';
 import shuffle from '@Src/shuffle';
+import { PlayerIteratorResult } from '@Src/makePlayersIterator';
 
 import Header from './Header';
 import Teams from './Teams';
-import generatePlayerImageURL from '@App/generatePlayerImageURL';
-import { PlayerIteratorResult } from '@Src/makePlayersIterator';
 
 function App(): React.ReactElement {
-  const playerState = atom({
-    key: 'playerState',
-    default: null,
-  });
+  const result = useRecoilValue(resultSelector);
   const [player, setPlayer] = useRecoilState<Player | null>(playerState);
   const { loading, error, players } = useFetchPlayers();
   const shuffledPlayers = React.useMemo(() => shuffle(players), [players]);
@@ -59,6 +58,7 @@ function App(): React.ReactElement {
           {player && <div>{player.name}</div>}
         </div>
         <Teams />
+        <div>Result is {String(result)}</div>
       </StyledContent>
     </StyledApp>
   );
