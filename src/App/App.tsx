@@ -57,8 +57,8 @@ function App(): React.ReactElement {
           {player && <PlayerImage playerId={player.id} />}
           {player && <div>{player.name}</div>}
         </div>
-        <Teams />
         <div>Result is {String(result)}</div>
+        { player && <Teams /> }
       </StyledContent>
     </StyledApp>
   );
@@ -73,8 +73,11 @@ const StyledApp = styled.div`
 `;
 
 const StyledContent = styled.div`
+  display: grid;
   grid-row: 2/3;
   grid-column: 2/3;
+  grid-row-gap: 3rem;
+  grid-template-rows: 10rem 2rem auto;
 `;
 
 const StyledHeader = styled(Header)`

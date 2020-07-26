@@ -24,14 +24,14 @@ function Teams(): React.ReactElement {
   const handleSearchTermChange = React.useCallback((event) => setSearchTerm(event.target.value), [setSearchTerm]);
 
   return (
-    <>
+    <div>
       <input type="text" onChange={handleSearchTermChange} />
       <StyledTeams>
         {filteredTeams.map((team) => (
           <Team key={team.id} team={team} />
         ))}
       </StyledTeams>
-    </>
+    </div>
   );
 }
 
