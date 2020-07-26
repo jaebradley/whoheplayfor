@@ -58,7 +58,7 @@ function App(): React.ReactElement {
           {player && <div>{player.name}</div>}
         </div>
         <div>Result is {String(result)}</div>
-        { player && <Teams /> }
+        {player && <Teams />}
       </StyledContent>
     </StyledApp>
   );
