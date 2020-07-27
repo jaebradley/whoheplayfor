@@ -9,6 +9,7 @@ import { Team } from '@Src/types';
 import { selectedTeamState } from '@App/atoms';
 
 function Team({ team }: { team: Team }): React.ReactElement {
+  const [isFocused, setIsFocused] = React.useState(false);
   const [selectedTeam, setSelectedTeam] = useRecoilState<Team | null>(selectedTeamState);
   const handleClick = React.useCallback(() => {
     if (!selectedTeam || (selectedTeam && team.id != selectedTeam.id)) {
@@ -18,8 +19,21 @@ function Team({ team }: { team: Team }): React.ReactElement {
   const isSelected = React.useMemo(() => !!selectedTeam && selectedTeam.id === team.id, [selectedTeam, team]);
   return (
     <StyledTeam>
-      <StyledTeamLogoWrapper isSelected={isSelected}>
-        <StyledTeamLogo team={team} size="3rem" onClick={handleClick} isSelected={isSelected} />
+      <StyledTeamLogoWrapper
+        isSelected={isSelected}
+        onMouseEnter={() => {
+          setIsFocused(true);
+        }}
+        onMouseLeave={() => {
+          setIsFocused(false);
+        }}
+      >
+        <StyledTeamLogo isFocused={isFocused} team={team} size="3rem" onClick={handleClick} isSelected={isSelected} />
+        {!isSelected && (
+          <StyledTeamNameWrapper isFocused={isFocused} onClick={handleClick}>
+            <StyledTeamName>{team.name}</StyledTeamName>
+          </StyledTeamNameWrapper>
+        )}
       </StyledTeamLogoWrapper>
       {isSelected && (
         <StyledIconWrapper>
@@ -35,8 +49,34 @@ const StyledTeam = styled.div`
   width: 100%;
 `;
 
-const StyledTeamLogo = styled(TeamLogo)<{ isSelected: boolean }>`
-  opacity: ${({ isSelected }) => (isSelected ? '0.1' : null)};
+const StyledTeamLogo = styled(TeamLogo)<{ isSelected: boolean; isFocused: boolean }>`
+  opacity: ${({ isSelected, isFocused }) => (isSelected || isFocused ? '0.1' : null)};
+`;
+
+const StyledTeamNameWrapper = styled.div<{ isFocused: boolean }>`
+  // https://stackoverflow.com/a/14263847/5225575
+  bottom: 0;
+  font-size: 0.1rem;
+  height: 3rem;
+  left: 0;
+  margin: 0;
+  opacity: ${({ isFocused }) => (isFocused ? 1 : 0)};
+  position: absolute;
+  right: 0;
+  text-align: center;
+  top: 0;
+  transition: opacity 0.2s, visibility 0.2s;
+  visibility: ${({ isFocused }) => (isFocused ? 'visible' : 'hidden')};
+  width: 3rem;
+  // https://stackoverflow.com/a/10831230/5225575
+  word-spacing: 3rem;
+`;
+
+const StyledTeamName = styled.div`
+  align-items: center;
+  display: flex;
+  height: 100%;
+  position: relative;
 `;
 
 const StyledTeamLogoWrapper = styled.div<{ isSelected: boolean }>`
