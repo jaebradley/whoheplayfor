@@ -4,12 +4,16 @@ import 'regenerator-runtime';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { RecoilRoot } from 'recoil';
+import { ThemeProvider } from 'styled-components';
 
 import App from '@App/App';
+import theme from '@App/styles/theme';
 
 ReactDOM.render(
   <RecoilRoot>
-    <App />
+    <ThemeProvider theme={theme}>
+      <App />
+    </ThemeProvider>
   </RecoilRoot>,
   document.getElementById('root') as HTMLElement,
 );
