@@ -1,10 +1,10 @@
 import * as React from 'react';
 
-import correctSelectionImages from "@Src/correctSelectionImageURLs";
-import incorrectSelectionImages from "@Src/incorrectSelectionImageURLs";
+import correctSelectionImages from '@Src/correctSelectionImageURLs';
+import incorrectSelectionImages from '@Src/incorrectSelectionImageURLs';
 
 type ResultProps = {
-  result: boolean
+  result: boolean;
 };
 
 const Result: React.FunctionComponent<ResultProps> = ({ result }: ResultProps) => {
@@ -17,7 +17,7 @@ const Result: React.FunctionComponent<ResultProps> = ({ result }: ResultProps) =
       The result is {String(result)}
       <img src={imageURL} />
     </div>
-  )
-}
+  );
+};
 
 export default Result;

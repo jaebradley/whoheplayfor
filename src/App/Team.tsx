@@ -17,8 +17,8 @@ function Team({ team }: { team: Team }): React.ReactElement {
       setSelectedTeam(team);
       setSelectionConfirmation(false);
     }
-  }, [selectedTeam, setSelectedTeam, team]);
-  const handleConfirmationClick = React.useCallback(()=> {
+  }, [selectedTeam, setSelectedTeam, team, setSelectionConfirmation]);
+  const handleConfirmationClick = React.useCallback(() => {
     setSelectionConfirmation(true);
   }, [setSelectionConfirmation]);
   const isSelected = React.useMemo(() => !!selectedTeam && selectedTeam.id === team.id, [selectedTeam, team]);

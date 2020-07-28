@@ -17,7 +17,7 @@ import { PlayerIteratorResult } from '@Src/makePlayersIterator';
 
 import Header from './Header';
 import Teams from './Teams';
-import Result from "./Result";
+import Result from './Result';
 
 function App(): React.ReactElement {
   const result = useRecoilValue<boolean | null>(resultSelector);
@@ -59,9 +59,7 @@ function App(): React.ReactElement {
           {player && <PlayerImage playerId={player.id} />}
           {player && <div>{player.name}</div>}
         </div>
-        {
-          selectionConfirmation && <Result result={!!result} />
-        }
+        {selectionConfirmation && <Result result={!!result} />}
         {player && !selectionConfirmation && <Teams />}
       </StyledContent>
     </StyledApp>

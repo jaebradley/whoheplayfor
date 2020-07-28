@@ -1,4 +1,4 @@
- const incorrectSelectionImageURLs: Array<string> = [
+const incorrectSelectionImageURLs: Array<string> = [
   'https://media.giphy.com/media/3oEduNEbTtAHABX0dy/giphy.gif',
   'https://media.giphy.com/media/1k2YhdutgkQzJWnsyp/giphy.gif',
   'https://media.giphy.com/media/1aWnHRHCNe2wxYtCom/giphy.gif',
@@ -9,6 +9,6 @@
   'https://media.giphy.com/media/kBI5aLB6wlw4zNnecN/giphy.gif',
   'https://tenor.com/tXKR.gif',
   'https://media.giphy.com/media/3o6wroOvQlCpdgNC1i/giphy.gif',
-]
+];
 
 export default incorrectSelectionImageURLs;

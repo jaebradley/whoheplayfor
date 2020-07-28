@@ -9,6 +9,6 @@ const correctSelectionImageURLs: Array<string> = [
   'https://media.giphy.com/media/yhErMWlARwlQ4/giphy.gif',
   'https://media.giphy.com/media/3Nx2jiwy1xzbtWBgoc/giphy.gif',
   'https://media.giphy.com/media/l3q2wPGC2BDpmKumA/giphy.gif',
-]
+];
 
 export default correctSelectionImageURLs;
