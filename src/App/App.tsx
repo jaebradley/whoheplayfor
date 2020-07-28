@@ -14,10 +14,12 @@ import { Player } from '@Src/types';
 import seenPlayersStore from '@Src/seenPlayersStore';
 import shuffle from '@Src/shuffle';
 import { PlayerIteratorResult } from '@Src/makePlayersIterator';
+import GlobalStyle from '@App/styles/global';
 
 import Header from './Header';
 import Teams from './Teams';
 import Result from './Result';
+import { ThemeInterface } from '@App/styles/theme';
 
 function App(): React.ReactElement {
   const result = useRecoilValue<boolean | null>(resultSelector);
@@ -51,22 +53,26 @@ function App(): React.ReactElement {
   }
 
   return (
-    <StyledApp>
-      <StyledHeader />
-      <StyledContent>
-        <div>
-          <button onClick={handleSelectClick}>Select</button>
-          {player && <PlayerImage playerId={player.id} />}
-          {player && <div>{player.name}</div>}
-        </div>
-        {selectionConfirmation && <Result result={!!result} />}
-        {player && !selectionConfirmation && <Teams />}
-      </StyledContent>
-    </StyledApp>
+    <>
+      <GlobalStyle />
+      <StyledApp>
+        <StyledHeader />
+        <StyledContent>
+          <div>
+            <button onClick={handleSelectClick}>Select</button>
+            {player && <PlayerImage playerId={player.id} />}
+            {player && <div>{player.name}</div>}
+          </div>
+          {selectionConfirmation && <Result result={!!result} />}
+          {player && !selectionConfirmation && <Teams />}
+        </StyledContent>
+      </StyledApp>
+    </>
   );
 }
 
-const StyledApp = styled.div`
+const StyledApp = styled.div<{ theme: ThemeInterface }>`
+  background-color: floralwhite;
   display: grid;
   grid-auto-flow: column;
   grid-template-columns: 20rem 1fr 20rem;
