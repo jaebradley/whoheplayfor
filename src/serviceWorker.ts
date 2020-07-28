@@ -1,9 +1,14 @@
 import { registerRoute } from 'workbox-routing';
-import { CacheFirst, NetworkFirst } from 'workbox-strategies';
+import { CacheFirst } from 'workbox-strategies';
 import { CacheableResponsePlugin } from 'workbox-cacheable-response';
 import { precacheAndRoute } from 'workbox-precaching';
 import { skipWaiting, clientsClaim } from 'workbox-core';
 import { ExpirationPlugin } from 'workbox-expiration';
+
+enum CacheName {
+  Data = 'data-cache',
+  TeamImages = 'team-images-cache',
+}
 
 skipWaiting();
 clientsClaim();
@@ -15,7 +20,7 @@ precacheAndRoute(self.__WB_MANIFEST || []);
 registerRoute(
   ({ url }) => url.origin === 'https://cors-anywhere.herokuapp.com',
   new CacheFirst({
-    cacheName: 'data-cache',
+    cacheName: CacheName.Data,
     plugins: [
       new CacheableResponsePlugin({
         statuses: [0, 200],
@@ -26,8 +31,8 @@ registerRoute(
 
 registerRoute(
   ({ url }) => url.origin === 'https://stats.nba.com' && url.pathname.startsWith('/media/img/teams/logos'),
-  new NetworkFirst({
-    cacheName: 'team-images-cache',
+  new CacheFirst({
+    cacheName: CacheName.TeamImages,
     plugins: [
       new CacheableResponsePlugin({
         statuses: [0, 200],

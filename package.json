@@ -26,6 +26,7 @@
   "homepage": "https://jaebradley.github.io/whoheplayfor",
   "dependencies": {
     "@hot-loader/react-dom": "^16.13.0",
+    "@rehooks/local-storage": "^2.4.0",
     "axios": "^0.19.2",
     "core-js": "^3.6.5",
     "fuse.js": "^6.4.0",
