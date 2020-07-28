@@ -1,21 +1,26 @@
 import * as React from 'react';
-import { useRecoilState } from 'recoil/dist';
+import { useRecoilState, useSetRecoilState } from 'recoil/dist';
 import styled from 'styled-components';
 import { Icon } from 'react-icons-kit';
 import { ic_check } from 'react-icons-kit/md/ic_check';
 
 import TeamLogo from '@App/TeamLogo';
 import { Team } from '@Src/types';
-import { selectedTeamState } from '@App/atoms';
+import { selectedTeamState, selectionConfirmationState } from '@App/atoms';
 
 function Team({ team }: { team: Team }): React.ReactElement {
   const [isFocused, setIsFocused] = React.useState(false);
   const [selectedTeam, setSelectedTeam] = useRecoilState<Team | null>(selectedTeamState);
+  const setSelectionConfirmation = useSetRecoilState(selectionConfirmationState);
   const handleClick = React.useCallback(() => {
     if (!selectedTeam || (selectedTeam && team.id != selectedTeam.id)) {
       setSelectedTeam(team);
+      setSelectionConfirmation(false);
     }
   }, [selectedTeam, setSelectedTeam, team]);
+  const handleConfirmationClick = React.useCallback(()=> {
+    setSelectionConfirmation(true);
+  }, [setSelectionConfirmation]);
   const isSelected = React.useMemo(() => !!selectedTeam && selectedTeam.id === team.id, [selectedTeam, team]);
   return (
     <StyledTeam>
@@ -37,7 +42,7 @@ function Team({ team }: { team: Team }): React.ReactElement {
       </StyledTeamLogoWrapper>
       {isSelected && (
         <StyledIconWrapper>
-          <Icon icon={ic_check} />
+          <Icon icon={ic_check} onClick={handleConfirmationClick} />
         </StyledIconWrapper>
       )}
     </StyledTeam>
