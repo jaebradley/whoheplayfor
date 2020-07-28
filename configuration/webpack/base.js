@@ -2,6 +2,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const { EnvironmentPlugin } = require('webpack');
 const WorkboxPlugin = require('workbox-webpack-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 const path = require('path');
 
@@ -15,6 +16,7 @@ module.exports = {
     globalObject: 'this'
   },
   plugins: [
+    new CleanWebpackPlugin(),
     new HtmlWebpackPlugin({
       title: 'Who He Play For?',
       template: path.resolve(__dirname, '../../src/index.html')
