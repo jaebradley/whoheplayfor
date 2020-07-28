@@ -1,48 +1,25 @@
 import * as React from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil/dist';
 import styled from 'styled-components';
-import { set } from 'idb-keyval';
 
-import PlayerImage from '@App/PlayerImage';
 import useFetchPlayers from '@App/hooks/useFetchPlayers';
-import useGetNextPlayer from '@App/hooks/useGetNextPlayer';
-import generatePlayerImageURL from '@App/generatePlayerImageURL';
 import { playerState, selectionConfirmationState } from '@App/atoms';
 import { resultSelector } from '@App/selectors';
 
 import { Player } from '@Src/types';
-import seenPlayersStore from '@Src/seenPlayersStore';
-import shuffle from '@Src/shuffle';
-import { PlayerIteratorResult } from '@Src/makePlayersIterator';
 import GlobalStyle from '@App/styles/global';
+import { ThemeInterface } from '@App/styles/theme';
 
 import Header from './Header';
 import Teams from './Teams';
 import Result from './Result';
-import { ThemeInterface } from '@App/styles/theme';
+import PlayerComponent from './Player';
 
 function App(): React.ReactElement {
   const result = useRecoilValue<boolean | null>(resultSelector);
   const selectionConfirmation = useRecoilValue(selectionConfirmationState);
-  const [player, setPlayer] = useRecoilState<Player | null>(playerState);
+  const [player] = useRecoilState<Player | null>(playerState);
   const { loading, error, players } = useFetchPlayers();
-  const shuffledPlayers = React.useMemo(() => shuffle(players), [players]);
-  const getNextPlayer = useGetNextPlayer({ players: shuffledPlayers });
-
-  const handleSelectClick = React.useCallback(() => {
-    getNextPlayer().then(({ currentPlayer, nextPlayer }: PlayerIteratorResult) => {
-      if (currentPlayer) {
-        set(currentPlayer.id, currentPlayer.name, seenPlayersStore)
-          .then(() => {
-            if (nextPlayer) {
-              new Image().src = generatePlayerImageURL({ playerId: nextPlayer.id });
-            }
-          })
-          .then(() => setPlayer(currentPlayer))
-          .catch((e) => console.log('unable to set player in index db', currentPlayer, e));
-      }
-    });
-  }, [getNextPlayer, setPlayer]);
 
   if (loading) {
     return <div>Loading</div>;
@@ -58,11 +35,9 @@ function App(): React.ReactElement {
       <StyledApp>
         <StyledHeader />
         <StyledContent>
-          <div>
-            <button onClick={handleSelectClick}>Select</button>
-            {player && <PlayerImage playerId={player.id} />}
-            {player && <div>{player.name}</div>}
-          </div>
+          <StyledPlayerSection>
+            <PlayerComponent players={players} />
+          </StyledPlayerSection>
           {selectionConfirmation && <Result result={!!result} />}
           {player && !selectionConfirmation && <Teams />}
         </StyledContent>
@@ -86,6 +61,12 @@ const StyledContent = styled.div`
   grid-column: 2/3;
   grid-row-gap: 3rem;
   grid-template-rows: 10rem 2rem auto;
+`;
+
+const StyledPlayerSection = styled.section`
+  align-items: center;
+  display: flex;
+  justify-content: center;
 `;
 
 const StyledHeader = styled(Header)`
