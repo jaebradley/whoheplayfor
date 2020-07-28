@@ -10,4 +10,9 @@ const selectedTeamState = atom({
   default: null,
 });
 
-export { playerState, selectedTeamState };
+const selectionConfirmationState = atom({
+  key: 'selectionConfirmationState',
+  default: false,
+});
+
+export { playerState, selectedTeamState, selectionConfirmationState };

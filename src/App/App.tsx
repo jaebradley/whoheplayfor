@@ -7,7 +7,7 @@ import PlayerImage from '@App/PlayerImage';
 import useFetchPlayers from '@App/hooks/useFetchPlayers';
 import useGetNextPlayer from '@App/hooks/useGetNextPlayer';
 import generatePlayerImageURL from '@App/generatePlayerImageURL';
-import { playerState } from '@App/atoms';
+import { playerState, selectionConfirmationState } from '@App/atoms';
 import { resultSelector } from '@App/selectors';
 
 import { Player } from '@Src/types';
@@ -17,9 +17,11 @@ import { PlayerIteratorResult } from '@Src/makePlayersIterator';
 
 import Header from './Header';
 import Teams from './Teams';
+import Result from './Result';
 
 function App(): React.ReactElement {
-  const result = useRecoilValue(resultSelector);
+  const result = useRecoilValue<boolean | null>(resultSelector);
+  const selectionConfirmation = useRecoilValue(selectionConfirmationState);
   const [player, setPlayer] = useRecoilState<Player | null>(playerState);
   const { loading, error, players } = useFetchPlayers();
   const shuffledPlayers = React.useMemo(() => shuffle(players), [players]);
@@ -57,8 +59,8 @@ function App(): React.ReactElement {
           {player && <PlayerImage playerId={player.id} />}
           {player && <div>{player.name}</div>}
         </div>
-        <div>Result is {String(result)}</div>
-        {player && <Teams />}
+        {selectionConfirmation && <Result result={!!result} />}
+        {player && !selectionConfirmation && <Teams />}
       </StyledContent>
     </StyledApp>
   );
