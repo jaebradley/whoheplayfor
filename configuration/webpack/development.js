@@ -1,4 +1,6 @@
 const { merge } = require('webpack-merge');
+const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
+const WebpackBuildNotifierPlugin = require('webpack-build-notifier');
 
 const base = require('./base');
 
@@ -12,5 +14,11 @@ module.exports = merge(base, {
     compress: true,
     port: 2020,
     hot: true
-  }
+  },
+  plugins: [
+    new WebpackBuildNotifierPlugin({
+      title: "Whoheplayfor Webpack Build",
+    }),
+    new BundleAnalyzerPlugin()
+  ]
 });
