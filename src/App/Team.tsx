@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useRecoilState, useSetRecoilState } from 'recoil/dist';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { Icon } from 'react-icons-kit';
 import { ic_check } from 'react-icons-kit/md/ic_check';
 
@@ -8,7 +8,7 @@ import TeamLogo from '@App/TeamLogo';
 import { Team } from '@Src/types';
 import { selectedTeamState, selectionConfirmationState } from '@App/atoms';
 
-function Team({ team }: { team: Team }): React.ReactElement {
+function Team({ team, isDisabled }: { team: Team; isDisabled: boolean }): React.ReactElement {
   const [isFocused, setIsFocused] = React.useState(false);
   const [selectedTeam, setSelectedTeam] = useRecoilState<Team | null>(selectedTeamState);
   const setSelectionConfirmation = useSetRecoilState(selectionConfirmationState);
@@ -23,7 +23,7 @@ function Team({ team }: { team: Team }): React.ReactElement {
   }, [setSelectionConfirmation]);
   const isSelected = React.useMemo(() => !!selectedTeam && selectedTeam.id === team.id, [selectedTeam, team]);
   return (
-    <StyledTeam>
+    <StyledTeam isDisabled={isDisabled}>
       <StyledTeamLogoWrapper
         isSelected={isSelected}
         onMouseEnter={() => {
@@ -49,9 +49,15 @@ function Team({ team }: { team: Team }): React.ReactElement {
   );
 }
 
-const StyledTeam = styled.div`
+const StyledTeam = styled.div<{ isDisabled: boolean }>`
   position: relative;
   width: 100%;
+  ${(props) =>
+    props.isDisabled &&
+    css`
+      opacity: 0.1;
+      pointer-events: none;
+    `}
 `;
 
 const StyledTeamLogo = styled(TeamLogo)<{ isSelected: boolean; isFocused: boolean }>`

@@ -15,4 +15,9 @@ const selectionConfirmationState = atom({
   default: false,
 });
 
-export { playerState, selectedTeamState, selectionConfirmationState };
+const searchTermState = atom({
+  key: 'searchTermState',
+  default: null,
+});
+
+export { playerState, selectedTeamState, selectionConfirmationState, searchTermState };
