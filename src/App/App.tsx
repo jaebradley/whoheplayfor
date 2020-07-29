@@ -56,17 +56,18 @@ const StyledApp = styled.div<{ theme: ThemeInterface }>`
 `;
 
 const StyledContent = styled.div`
-  display: grid;
+  display: flex;
+  flex-direction: column;
   grid-row: 2/3;
   grid-column: 2/3;
-  grid-row-gap: 3rem;
-  grid-template-rows: 10rem 2rem auto;
 `;
 
 const StyledPlayerSection = styled.section`
   align-items: center;
   display: flex;
   justify-content: center;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
 `;
 
 const StyledHeader = styled(Header)`

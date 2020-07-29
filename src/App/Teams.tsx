@@ -1,18 +1,21 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import Fuse from 'fuse.js';
+import { useRecoilValue } from 'recoil';
 
 import TEAMS from '@Src/teams';
 import Team from '@App/Team';
+import Search from '@App/Search';
+import { searchTermState } from '@App/atoms';
 
 const TEAM_VALUES = Array.from(TEAMS.entries()).map(([, team]) => team);
 const fuse = new Fuse(TEAM_VALUES, { keys: ['name', 'abbreviation'] });
 
 function Teams(): React.ReactElement {
-  const [searchTerm, setSearchTerm] = React.useState('');
+  const searchTerm = useRecoilValue<string | null>(searchTermState);
 
   const filteredTeams = React.useMemo(() => {
-    if (searchTerm.trim()) {
+    if (searchTerm && searchTerm.trim()) {
       return fuse.search(searchTerm).map((match) => ({
         ...match.item,
       }));
@@ -21,23 +24,38 @@ function Teams(): React.ReactElement {
     return TEAM_VALUES;
   }, [searchTerm]);
 
-  const handleSearchTermChange = React.useCallback((event) => setSearchTerm(event.target.value), [setSearchTerm]);
-
   return (
-    <div>
-      <input type="text" onChange={handleSearchTermChange} />
-      <StyledTeams>
-        {filteredTeams.map((team) => (
-          <Team key={team.id} team={team} />
-        ))}
-      </StyledTeams>
-    </div>
+    <StyledTeamsWrapper>
+      <Search />
+      <StyledTeamListWrapper>
+        <StyledTeams>
+          {Array.from(TEAMS.entries()).map(([, team]) => (
+            <Team
+              key={team.id}
+              team={team}
+              isDisabled={!filteredTeams.length || filteredTeams.every((filteredTeam) => filteredTeam.id !== team.id)}
+            />
+          ))}
+        </StyledTeams>
+      </StyledTeamListWrapper>
+    </StyledTeamsWrapper>
   );
 }
 
+const StyledTeamsWrapper = styled.div`
+  align-items: center;
+  display: flex;
+`;
+
+const StyledTeamListWrapper = styled.div`
+  padding-left: 2rem;
+  width: 100%;
+`;
+
 const StyledTeams = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(5rem, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(3rem, 1fr));
+  grid-gap: 1.5rem;
 `;
 
 export default Teams;
