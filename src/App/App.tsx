@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import styled from 'styled-components';
+import { CSSTransition, SwitchTransition } from 'react-transition-group';
 
 import useFetchPlayers from '@App/hooks/useFetchPlayers';
 import { playerState, selectionConfirmationState } from '@App/atoms';
@@ -26,17 +27,23 @@ function App(): React.ReactElement {
       <GlobalStyle />
       <StyledApp>
         <StyledHeader />
-        {loading && <StyledLoading />}
-        {!loading && error && <div>Error</div>}
-        {!loading && !error && (
-          <StyledContent>
-            <StyledPlayerSection>
-              <PlayerComponent players={players} />
-            </StyledPlayerSection>
-            {player && !selectionConfirmation && <Teams />}
-            {selectionConfirmation && <Result />}
-          </StyledContent>
-        )}
+        <SwitchTransition mode="out-in">
+          <StyledTransition key={String(!loading && !error)} timeout={500} unmountOnExit classNames="main-content">
+            <StyledMain key="content">
+              {loading ? (
+                <StyledLoading />
+              ) : (
+                <StyledContent>
+                  <StyledPlayerSection>
+                    <PlayerComponent players={players} />
+                  </StyledPlayerSection>
+                  {player && !selectionConfirmation && <Teams />}
+                  {selectionConfirmation && <Result />}
+                </StyledContent>
+              )}
+            </StyledMain>
+          </StyledTransition>
+        </SwitchTransition>
         <StyledFooter />
       </StyledApp>
     </>
@@ -47,15 +54,44 @@ const StyledApp = styled.div<{ theme: ThemeInterface }>`
   background-color: floralwhite;
   display: grid;
   grid-auto-flow: column;
-  grid-template-columns: 20rem 1fr 20rem;
-  grid-template-rows: auto 1fr 3rem;
+  grid-template-columns: 1fr 2fr 1fr;
+  grid-template-rows: auto 1fr auto;
   height: 100vh;
 `;
 
-const StyledContent = styled.main`
+const StyledMain = styled.main`
+  display: grid;
+  grid-column-start: 1;
+  grid-column-end: 4;
+  grid-template-columns: 1fr 2fr 1fr;
+`;
+
+const StyledTransition = styled(CSSTransition)`
+  .main-content-enter {
+    opacity: 0;
+  }
+
+  .main-content-exit {
+    opacity: 1;
+  }
+
+  .main-content-enter-active {
+    opacity: 1;
+  }
+
+  .main-content-exit-active {
+    opacity: 0;
+  }
+
+  .main-content-enter-active,
+  .main-content-exit-active {
+    transition: opacity 500ms;
+  }
+`;
+
+const StyledContent = styled.div`
   display: flex;
   flex-direction: column;
-  grid-row: 2/3;
   grid-column: 2/3;
 `;
 
@@ -76,7 +112,6 @@ const StyledHeader = styled(Header)`
 const StyledLoading = styled(Loading)`
   grid-column-end: 4;
   grid-column-start: 1;
-  grid-row: 2/3;
 `;
 
 const StyledFooter = styled(Footer)`
