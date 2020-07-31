@@ -17,7 +17,8 @@
     "paths": {
       "react-dom/*": ["./node_modules/@hot-loader/react-dom/*"],
       "@App/*": ["./src/App/*"],
-      "@Src/*": ["./src/*"]
+      "@Src/*": ["./src/*"],
+      "@Images": ["./src/images/*"]
     }
   },
   "exclude": [
@@ -28,6 +29,7 @@
     "src/setupTests.ts"
   ],
   "types": [
-    "typePatches"
+    "typePatches",
+    "./src/custom.d.ts"
   ]
 }

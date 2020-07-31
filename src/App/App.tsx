@@ -9,6 +9,7 @@ import { Player } from '@Src/types';
 import GlobalStyle from '@App/styles/global';
 import { ThemeInterface } from '@App/styles/theme';
 
+import Footer from './Footer';
 import Header from './Header';
 import Teams from './Teams';
 import Result from './Result';
@@ -39,6 +40,7 @@ function App(): React.ReactElement {
           {player && !selectionConfirmation && <Teams />}
           {selectionConfirmation && <Result />}
         </StyledContent>
+        <StyledFooter />
       </StyledApp>
     </>
   );
@@ -49,11 +51,11 @@ const StyledApp = styled.div<{ theme: ThemeInterface }>`
   display: grid;
   grid-auto-flow: column;
   grid-template-columns: 20rem 1fr 20rem;
-  grid-template-rows: auto 1fr auto;
+  grid-template-rows: auto 1fr 3rem;
   height: 100vh;
 `;
 
-const StyledContent = styled.div`
+const StyledContent = styled.main`
   display: flex;
   flex-direction: column;
   grid-row: 2/3;
@@ -72,6 +74,12 @@ const StyledHeader = styled(Header)`
   grid-column: 1/-1;
   place-items: center;
   text-align: center;
+`;
+
+const StyledFooter = styled(Footer)`
+  grid-column-end: 4;
+  grid-column-start: 1;
+  grid-row: 3/3;
 `;
 
 export default App;
