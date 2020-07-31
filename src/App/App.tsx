@@ -11,6 +11,7 @@ import { ThemeInterface } from '@App/styles/theme';
 
 import Footer from './Footer';
 import Header from './Header';
+import Loading from './Loading';
 import Teams from './Teams';
 import Result from './Result';
 import PlayerComponent from './Player';
@@ -20,26 +21,22 @@ function App(): React.ReactElement {
   const [player] = useRecoilState<Player | null>(playerState);
   const { loading, error, players } = useFetchPlayers();
 
-  if (loading) {
-    return <div>Loading</div>;
-  }
-
-  if (error) {
-    return <div>Error</div>;
-  }
-
   return (
     <>
       <GlobalStyle />
       <StyledApp>
         <StyledHeader />
-        <StyledContent>
-          <StyledPlayerSection>
-            <PlayerComponent players={players} />
-          </StyledPlayerSection>
-          {player && !selectionConfirmation && <Teams />}
-          {selectionConfirmation && <Result />}
-        </StyledContent>
+        {loading && <StyledLoading />}
+        {!loading && error && <div>Error</div>}
+        {!loading && !error && (
+          <StyledContent>
+            <StyledPlayerSection>
+              <PlayerComponent players={players} />
+            </StyledPlayerSection>
+            {player && !selectionConfirmation && <Teams />}
+            {selectionConfirmation && <Result />}
+          </StyledContent>
+        )}
         <StyledFooter />
       </StyledApp>
     </>
@@ -74,6 +71,12 @@ const StyledHeader = styled(Header)`
   grid-column: 1/-1;
   place-items: center;
   text-align: center;
+`;
+
+const StyledLoading = styled(Loading)`
+  grid-column-end: 4;
+  grid-column-start: 1;
+  grid-row: 2/3;
 `;
 
 const StyledFooter = styled(Footer)`
