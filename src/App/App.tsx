@@ -1,10 +1,9 @@
 import * as React from 'react';
-import { useRecoilState, useRecoilValue } from 'recoil/dist';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import styled from 'styled-components';
 
 import useFetchPlayers from '@App/hooks/useFetchPlayers';
 import { playerState, selectionConfirmationState } from '@App/atoms';
-import { resultSelector } from '@App/selectors';
 
 import { Player } from '@Src/types';
 import GlobalStyle from '@App/styles/global';
@@ -16,7 +15,6 @@ import Result from './Result';
 import PlayerComponent from './Player';
 
 function App(): React.ReactElement {
-  const result = useRecoilValue<boolean | null>(resultSelector);
   const selectionConfirmation = useRecoilValue(selectionConfirmationState);
   const [player] = useRecoilState<Player | null>(playerState);
   const { loading, error, players } = useFetchPlayers();
@@ -38,8 +36,8 @@ function App(): React.ReactElement {
           <StyledPlayerSection>
             <PlayerComponent players={players} />
           </StyledPlayerSection>
-          {selectionConfirmation && <Result result={!!result} />}
           {player && !selectionConfirmation && <Teams />}
+          {selectionConfirmation && <Result />}
         </StyledContent>
       </StyledApp>
     </>

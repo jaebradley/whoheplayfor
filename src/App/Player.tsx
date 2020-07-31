@@ -1,28 +1,29 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import PlayerImage from '@App/PlayerImage';
+import { Icon } from 'react-icons-kit';
+import { ic_chevron_right } from 'react-icons-kit/md/ic_chevron_right';
+import { useRecoilState } from 'recoil';
+import { useLocalStorage } from '@rehooks/local-storage';
+import { set } from 'idb-keyval';
+
+import seenPlayersStore from '@Src/seenPlayersStore';
 import { Player } from '@Src/types';
 import { PlayerIteratorResult } from '@Src/makePlayersIterator';
-import { set } from 'idb-keyval';
-import seenPlayersStore from '@Src/seenPlayersStore';
-import generatePlayerImageURL from '@App/generatePlayerImageURL';
-import { useRecoilState } from 'recoil/dist';
-import { useLocalStorage } from '@rehooks/local-storage';
-import { playerState } from '@App/atoms';
 import shuffle from '@Src/shuffle';
+
+import PlayerImage from '@App/PlayerImage';
+import generatePlayerImageURL from '@App/generatePlayerImageURL';
 import useGetNextPlayer from '@App/hooks/useGetNextPlayer';
 import { ThemeInterface } from '@App/styles/theme';
-import { Icon } from 'react-icons-kit';
-import { ic_skip_next } from 'react-icons-kit/md/ic_skip_next';
+import { playerSelector } from '@App/selectors';
 
 type PlayerProps = {
   players: Array<Player>;
 };
 
 function Player({ players }: PlayerProps): React.ReactElement {
-  const [isFocused, setIsFocused] = React.useState(false);
   const [currentPlayer, setCurrentPlayer] = useLocalStorage<Player>('currentPlayer');
-  const [player, setPlayer] = useRecoilState<Player | null>(playerState);
+  const [player, setPlayer] = useRecoilState<Player | null>(playerSelector);
   const shuffledPlayers = React.useMemo(() => shuffle(players), [players]);
   const getNextPlayer = useGetNextPlayer({ players: shuffledPlayers });
 
@@ -49,7 +50,6 @@ function Player({ players }: PlayerProps): React.ReactElement {
           })
           .then(() => setCurrentPlayer(currentPlayer))
           .then(() => setPlayer(currentPlayer))
-          .then(() => setIsFocused(false))
           .catch((e) => console.log('unable to set player in index db', currentPlayer, e));
       }
     });
@@ -61,18 +61,13 @@ function Player({ players }: PlayerProps): React.ReactElement {
 
   return (
     <StyledPlayer>
-      <StyledImageWrapper
-        onMouseEnter={() => {
-          setIsFocused(true);
-        }}
-        onMouseLeave={() => {
-          setIsFocused(false);
-        }}
-      >
-        <StyledPlayerImage playerId={player.id} isFocused={isFocused} />
-        <StyledNext size="2rem" onClick={handleSelectClick} icon={ic_skip_next} isFocused={isFocused} />
-      </StyledImageWrapper>
-      <StyledName>{player.name}</StyledName>
+      <StyledPlayerDetails>
+        <PlayerImage playerId={player.id} />
+        <StyledName>{player.name}</StyledName>
+      </StyledPlayerDetails>
+      <div>
+        <Icon size="2rem" onClick={handleSelectClick} icon={ic_chevron_right} />
+      </div>
     </StyledPlayer>
   );
 }
@@ -80,32 +75,26 @@ function Player({ players }: PlayerProps): React.ReactElement {
 const StyledPlayer = styled.div`
   align-items: center;
   display: flex;
-  flex-direction: column;
 `;
 
-const StyledImageWrapper = styled.div`
-  position: relative;
-`;
-
-const StyledPlayerImage = styled(PlayerImage)<{ isFocused: boolean }>`
-  opacity: ${({ isFocused }) => (isFocused ? '0.1' : null)};
-`;
-
-const StyledNext = styled(Icon)<{ isFocused: boolean; theme: ThemeInterface }>`
-  border: 1px solid ${({ theme }) => theme.primary};
+const StyledPlayerDetails = styled.div`
+  align-items: center;
+  background-color: ${({ theme }) => theme.primary};
+  border: 1px solid ${({ theme }) => theme.secondary};
   border-radius: 50%;
-  color: ${({ theme }) => theme.primary};
-  left: 4rem;
-  position: absolute;
-  top: 2rem;
-  visibility: ${({ isFocused }) => (isFocused ? 'visible' : 'hidden')};
+  display: flex;
+  flex-direction: column;
+  height: 10rem;
+  width: 10rem;
+  justify-content: center;
 `;
 
 const StyledName = styled.h5<{ theme: ThemeInterface }>`
-  color: ${({ theme }) => theme.primary};
+  color: ${({ theme }) => theme.secondary};
   font-weight: bold;
   font-size: 1rem;
   margin: 1rem;
+  text-align: center;
 `;
 
 export default Player;
