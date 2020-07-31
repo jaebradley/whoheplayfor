@@ -2,6 +2,7 @@ module.exports = {
   parser: '@typescript-eslint/parser',
   extends: [
     'eslint:recommended',
+    'plugin:jsx-a11y/recommended',
     'plugin:import/errors',
     'plugin:import/warnings',
     'plugin:react/recommended',

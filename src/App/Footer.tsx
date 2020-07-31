@@ -7,9 +7,17 @@ function Footer({ className }: InferProps<typeof Footer.propTypes>): React.React
   return (
     <StyledFooter className={className || ''}>
       <StyledTextWrapper>
-        <a href="https://github.com/jaebradley/whoheplayfor" target="_blank" rel="noreferrer">
-          <StyledText>made with ❤️ (and 🏀)</StyledText>
-        </a>
+        <StyledText>
+          made with{' '}
+          <span role="img" aria-label="heart">
+            ❤️
+          </span>
+          ( and {' '}
+          <span role="img" aria-label="basketball">
+            🏀
+          </span>
+          {' '})
+        </StyledText>
       </StyledTextWrapper>
     </StyledFooter>
   );
