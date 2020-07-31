@@ -16,7 +16,7 @@ function Footer({ className }: InferProps<typeof Footer.propTypes>): React.React
           <span role="img" aria-label="basketball">
             🏀
           </span>
-          {' '})
+          )
         </StyledText>
       </StyledTextWrapper>
     </StyledFooter>
