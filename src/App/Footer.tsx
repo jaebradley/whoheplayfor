@@ -12,7 +12,7 @@ function Footer({ className }: InferProps<typeof Footer.propTypes>): React.React
           <span role="img" aria-label="heart">
             ❤️
           </span>
-          ( and {' '}
+          ( and{' '}
           <span role="img" aria-label="basketball">
             🏀
           </span>
