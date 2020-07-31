@@ -1,6 +1,6 @@
 import { selector } from 'recoil/dist';
 
-import { playerState, selectedTeamState } from '@App/atoms';
+import { playerState, selectedTeamState, searchTermState, selectionConfirmationState } from '@App/atoms';
 import { Player, Team } from '@Src/types';
 
 const resultSelector = selector<boolean | null>({
@@ -23,4 +23,17 @@ const resultSelector = selector<boolean | null>({
   },
 });
 
-export { resultSelector };
+const playerSelector = selector<Player | null>({
+  key: 'playerSelector',
+  get: ({ get }) => {
+    return get(playerState);
+  },
+  set: ({ set }, newValue) => {
+    set(playerState, newValue);
+    set(selectedTeamState, null);
+    set(searchTermState, null);
+    set(selectionConfirmationState, false);
+  },
+});
+
+export { resultSelector, playerSelector };
