@@ -34,6 +34,10 @@ module.exports = {
   module: {
     rules: [
       {
+        test: /\.svg$/,
+        loader: '@svgr/webpack'
+      },
+      {
         test: /\.tsx?$/,
         use: 'ts-loader',
         exclude: /node_modules/,
@@ -61,7 +65,8 @@ module.exports = {
     alias: {
       'react-dom': '@hot-loader/react-dom',
       '@App': path.resolve(__dirname, '../../src/App'),
-      '@Src': path.resolve(__dirname, '../../src')
+      '@Src': path.resolve(__dirname, '../../src'),
+      '@Images': path.resolve(__dirname, '../../src/images'),
     },
   },
 };
