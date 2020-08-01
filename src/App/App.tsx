@@ -37,7 +37,7 @@ function App(): React.ReactElement {
                   <StyledPlayerSection>
                     <PlayerComponent players={players} />
                   </StyledPlayerSection>
-                  {player && !selectionConfirmation && <Teams />}
+                  {player && <Teams />}
                   {selectionConfirmation && <Result />}
                 </StyledContent>
               )}
@@ -51,7 +51,6 @@ function App(): React.ReactElement {
 }
 
 const StyledApp = styled.div<{ theme: ThemeInterface }>`
-  background-color: floralwhite;
   display: grid;
   grid-auto-flow: column;
   grid-template-columns: 1fr 2fr 1fr;

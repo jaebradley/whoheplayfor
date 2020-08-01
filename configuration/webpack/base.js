@@ -29,7 +29,7 @@ module.exports = {
       swSrc: path.resolve(__dirname, '../../src/serviceWorker.ts'),
       swDest: path.resolve(__dirname, '../../dist/serviceWorker.js'),
       maximumFileSizeToCacheInBytes: 10000000
-    })
+    }),
   ],
   module: {
     rules: [

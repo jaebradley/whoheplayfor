@@ -1,4 +1,5 @@
 const { merge } = require('webpack-merge');
+const { EnvironmentPlugin } = require('webpack');
 
 const base = require('./base');
 
@@ -12,5 +13,10 @@ module.exports = merge(base, {
     splitChunks: {
       chunks: 'all'
     }
-  }
+  },
+  plugins: [
+    new EnvironmentPlugin({
+      NODE_ENV: 'development'
+    }),
+  ]
 });

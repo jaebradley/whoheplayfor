@@ -38,6 +38,7 @@ const Result: React.FunctionComponent = () => {
 };
 
 const StyledResult = styled.div`
+  color: ${({ theme }) => theme.secondary};
   display: flex;
   flex-direction: column;
   justify-content: center;

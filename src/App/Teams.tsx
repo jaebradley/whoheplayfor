@@ -54,7 +54,7 @@ const StyledTeamListWrapper = styled.div`
 
 const StyledTeams = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(3rem, 1fr));
+  grid-template-columns: repeat(auto-fill, 4rem);
   grid-gap: 1.5rem;
 `;
 
