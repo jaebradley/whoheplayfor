@@ -11,7 +11,7 @@ import { searchTermState } from '@App/atoms';
 const TEAM_VALUES = Array.from(TEAMS.entries()).map(([, team]) => team);
 const fuse = new Fuse(TEAM_VALUES, { keys: ['name', 'abbreviation'] });
 
-function Teams(): React.ReactElement {
+function Teams({ isDisabled }: { isDisabled: boolean }): React.ReactElement {
   const searchTerm = useRecoilValue<string | null>(searchTermState);
 
   const filteredTeams = React.useMemo(() => {
@@ -25,7 +25,7 @@ function Teams(): React.ReactElement {
   }, [searchTerm]);
 
   return (
-    <StyledTeamsWrapper>
+    <StyledTeamsWrapper isDisabled={isDisabled}>
       <Search />
       <StyledTeamListWrapper>
         <StyledTeams>
@@ -42,9 +42,11 @@ function Teams(): React.ReactElement {
   );
 }
 
-const StyledTeamsWrapper = styled.div`
+const StyledTeamsWrapper = styled.div<{ isDisabled: boolean }>`
   align-items: center;
   display: flex;
+  opacity: ${({ isDisabled }) => (isDisabled ? 0.3 : 'none')};
+  pointer-events: ${({ isDisabled }) => (isDisabled ? 'none' : 'all')};
 `;
 
 const StyledTeamListWrapper = styled.div`
