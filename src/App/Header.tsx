@@ -3,7 +3,9 @@ import styled from 'styled-components';
 import * as PropTypes from 'prop-types';
 import { InferProps } from 'prop-types';
 import { Icon } from 'react-icons-kit';
-import { ic_menu } from 'react-icons-kit/md/ic_menu';
+import { ic_home } from 'react-icons-kit/md/ic_home';
+import { ic_info } from 'react-icons-kit/md/ic_info';
+import { ic_replay } from 'react-icons-kit/md/ic_replay';
 
 import theme, { ThemeInterface } from '@App/styles/theme';
 import GitHubLogo from '@Images/github.svg';
@@ -11,9 +13,11 @@ import GitHubLogo from '@Images/github.svg';
 function Header({ className }: InferProps<typeof Header.propTypes>): React.ReactElement {
   return (
     <StyledHeader className={className || ''} theme={theme}>
-      <StyledLink href="#menu">
-        <Icon size="2rem" icon={ic_menu} />
-      </StyledLink>
+      <StyledIcons>
+        <StyledIcon size="1.5rem" icon={ic_home} />
+        <StyledIcon size="1.5rem" icon={ic_info} />
+        <StyledIcon size="1.5rem" icon={ic_replay} />
+      </StyledIcons>
       <a href="https://github.com/jaebradley/whoheplayfor" target="_blank" rel="noreferrer">
         <StyledGithubLogo />
       </a>
@@ -28,8 +32,15 @@ const StyledHeader = styled.header<{ theme: ThemeInterface }>`
   justify-content: space-between;
 `;
 
-const StyledLink = styled.a<{ theme: ThemeInterface }>`
+const StyledIcons = styled.div`
+  display: flex;
+  justify-content: space-between;
+  width: 7rem;
+`;
+
+const StyledIcon = styled(Icon)`
   color: ${({ theme }) => theme.secondary};
+  cursor: pointer;
 `;
 
 const StyledGithubLogo = styled(GitHubLogo)`
