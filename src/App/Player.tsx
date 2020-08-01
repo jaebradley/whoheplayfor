@@ -1,7 +1,7 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import { Icon } from 'react-icons-kit';
-import { ic_chevron_right } from 'react-icons-kit/md/ic_chevron_right';
+import { ic_fast_forward } from 'react-icons-kit/md/ic_fast_forward';
 import { useRecoilState } from 'recoil';
 import { useLocalStorage } from '@rehooks/local-storage';
 import { set } from 'idb-keyval';
@@ -66,7 +66,7 @@ function Player({ players }: PlayerProps): React.ReactElement {
         <StyledName>{player.name}</StyledName>
       </StyledPlayerDetails>
       <div>
-        <Icon size="2rem" onClick={handleSelectClick} icon={ic_chevron_right} />
+        <StyledFastForward size="2rem" onClick={handleSelectClick} icon={ic_fast_forward} />
       </div>
     </StyledPlayer>
   );
@@ -75,11 +75,12 @@ function Player({ players }: PlayerProps): React.ReactElement {
 const StyledPlayer = styled.div`
   align-items: center;
   display: flex;
+  flex-direction: column;
 `;
 
 const StyledPlayerDetails = styled.div`
   align-items: center;
-  background-color: ${({ theme }) => theme.primary};
+  background-color: moccasin;
   border: 1px solid ${({ theme }) => theme.secondary};
   border-radius: 50%;
   display: flex;
@@ -90,11 +91,15 @@ const StyledPlayerDetails = styled.div`
 `;
 
 const StyledName = styled.h5<{ theme: ThemeInterface }>`
-  color: ${({ theme }) => theme.secondary};
+  color: ${({ theme }) => theme.primary};
   font-weight: bold;
   font-size: 1rem;
   margin: 1rem;
   text-align: center;
+`;
+
+const StyledFastForward = styled(Icon)`
+  color: ${({ theme }) => theme.secondary};
 `;
 
 export default Player;

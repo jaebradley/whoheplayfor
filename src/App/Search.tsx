@@ -56,25 +56,25 @@ const StyledSearchWrapper = styled.div`
 // Copied from https://codepen.io/sebastianpopp/pen/myYmmy
 const StyledLabel = styled.label<{ isOpen: boolean; theme: ThemeInterface }>`
   align-items: center;
+  border: 0.1875rem solid ${(props) => props.theme.secondary};
+  border-radius: 1rem;
   display: flex;
-  position: relative;
   height: 2rem;
   width: 2rem;
   box-sizing: border-box;
   padding: 0 0.5rem 0 0.5rem;
-  border: 0.1875rem solid ${(props) => props.theme.primary};
-  border-radius: 1rem;
+  position: relative;
   transition: all 200ms ease;
   cursor: text;
 
   &:after {
+    background: ${(props) => props.theme.secondary};
     content: '';
     position: absolute;
     width: 0.1875rem;
     height: 1.25rem;
     right: -0.3125rem;
     top: 1.25rem;
-    background: ${(props) => props.theme.primary};
     border-radius: 0.1875rem;
     transform: rotate(-45deg);
     transition: all 200ms ease;
@@ -96,15 +96,15 @@ const StyledInput = styled.input<{ theme: ThemeInterface }>`
   background: transparent;
   border: none;
   box-sizing: border-box;
-  caret-color: ${(props) => props.theme.primary};
-  color: ${(props) => props.theme.primary};
+  caret-color: ${(props) => props.theme.secondary};
+  color: ${(props) => props.theme.secondary};
   font-size: 1rem;
   outline-width: 0;
   width: 100%;
 `;
 
 const StyledIcon = styled(Icon)<{ theme: ThemeInterface }>`
-  color: ${(props) => props.theme.primary};
+  color: ${(props) => props.theme.secondary};
 `;
 
 export default Search;

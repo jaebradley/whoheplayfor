@@ -1,6 +1,7 @@
 const { merge } = require('webpack-merge');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 const WebpackBuildNotifierPlugin = require('webpack-build-notifier');
+const { EnvironmentPlugin } = require('webpack');
 
 const base = require('./base');
 
@@ -16,9 +17,12 @@ module.exports = merge(base, {
     hot: true
   },
   plugins: [
+    new EnvironmentPlugin({
+      NODE_ENV: 'development'
+    }),
     new WebpackBuildNotifierPlugin({
       title: "Whoheplayfor Webpack Build",
     }),
-    new BundleAnalyzerPlugin()
+    new BundleAnalyzerPlugin(),
   ]
 });
