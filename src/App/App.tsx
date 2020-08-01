@@ -37,7 +37,7 @@ function App(): React.ReactElement {
                   <StyledPlayerSection>
                     <PlayerComponent players={players} />
                   </StyledPlayerSection>
-                  {player && <Teams />}
+                  <Teams isDisabled={!!(player && selectionConfirmation)} />
                   {selectionConfirmation && <Result />}
                 </StyledContent>
               )}
