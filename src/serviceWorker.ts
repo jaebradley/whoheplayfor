@@ -53,7 +53,9 @@ registerRoute(
 );
 
 registerRoute(
-  ({ url }) => url.origin === 'https://ak-static.cms.nba.com' && url.pathname.startsWith('/wp-content/uploads/headshots/nba/latest'),
+  ({ url }) =>
+    url.origin === 'https://ak-static.cms.nba.com' &&
+    url.pathname.startsWith('/wp-content/uploads/headshots/nba/latest'),
   new CacheFirst({
     cacheName: CacheName.PlayerImages,
     plugins: [
@@ -66,4 +68,4 @@ registerRoute(
       }),
     ],
   }),
-)
+);
