@@ -31,7 +31,7 @@ function Player({ player, onSkip }: PlayerProps): React.ReactElement {
   return (
     <StyledPlayer>
       <StyledPlayerDetails>
-        <PlayerImage playerId={player.id} />
+        <PlayerImage playerId={player.id} remSize={5} />
         <StyledName>{player.name}</StyledName>
         <div
           onMouseEnter={handleFocusSkip}

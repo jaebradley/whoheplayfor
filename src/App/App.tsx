@@ -53,11 +53,13 @@ function App(): React.ReactElement {
     return Promise.resolve()
       .then(() => {
         if (player) {
+          const timestamp = new Date().getTime();
           return set(
-            new Date().getTime(),
+            timestamp,
             {
               player,
               selectedTeam,
+              createdAt: timestamp,
             },
             resultsStore,
           );
@@ -101,6 +103,8 @@ function App(): React.ReactElement {
                   </StyledPlayerSection>
                   <Teams isDisabled={player && selectionConfirmation} />
                   <StyledHistory>
+                    {/* fuck you typescript */}
+                    {/* @ts-ignore */}
                     <History />
                   </StyledHistory>
                 </StyledContent>
@@ -180,8 +184,9 @@ const StyledPlayerSection = styled.section`
 `;
 
 const StyledHistory = styled.div`
-  display: flex;
-  justify-content: center;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  grid-gap: 2rem;
   margin-top: 3rem;
 `;
 
