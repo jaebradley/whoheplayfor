@@ -63,12 +63,14 @@ function History({ isMobile }: HistoryProps): React.ReactElement {
 
   return (
     <StyledHistory>
-      <StyledIterateResultIcon
-        isDisabled={(endIndex || 0) < maxCount}
-        size="3rem"
-        icon={ic_keyboard_arrow_left}
-        onClick={handlePreviousResultClick}
-      />
+      <div tabIndex={0} role="button">
+        <StyledIterateResultIcon
+          isDisabled={(endIndex || 0) < maxCount}
+          size="3rem"
+          icon={ic_keyboard_arrow_left}
+          onClick={handlePreviousResultClick}
+        />
+      </div>
       {results.slice(Math.max((endIndex || 0) - maxCount + 1, 0), (endIndex || 0) + 1).map((result: StoredResult) => {
         const outcome: boolean | null =
           !result.player || !result.selectedTeam
@@ -86,12 +88,15 @@ function History({ isMobile }: HistoryProps): React.ReactElement {
           </StyledPlayerDetails>
         );
       })}
-      <StyledIterateResultIcon
-        isDisabled={endIndex === Math.max(results.length - 1, 0)}
-        size="3rem"
-        icon={ic_keyboard_arrow_right}
-        onClick={handleNextResultClick}
-      />
+
+      <div tabIndex={0} role="button">
+        <StyledIterateResultIcon
+          isDisabled={endIndex === Math.max(results.length - 1, 0)}
+          size="3rem"
+          icon={ic_keyboard_arrow_right}
+          onClick={handleNextResultClick}
+        />
+      </div>
     </StyledHistory>
   );
 }
