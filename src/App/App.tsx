@@ -40,7 +40,6 @@ function App(): React.ReactElement {
                     <PlayerComponent players={players} />
                   </StyledPlayerSection>
                   <Teams isDisabled={!!(player && selectionConfirmation)} />
-                  {selectionConfirmation && <Result />}
                 </StyledContent>
               )}
             </StyledMain>
