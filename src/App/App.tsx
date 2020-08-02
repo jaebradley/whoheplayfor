@@ -8,13 +8,14 @@ import { set } from 'idb-keyval';
 import generatePlayerImageURL from '@App/generatePlayerImageURL';
 import useFetchPlayers from '@App/hooks/useFetchPlayers';
 import useGetNextPlayer from '@App/hooks/useGetNextPlayer';
-import { selectionConfirmationState } from '@App/atoms';
+import { selectedTeamState, selectionConfirmationState } from '@App/atoms';
 import { ThemeInterface } from '@App/styles/theme';
 import { playerSelector } from '@App/selectors';
 
 import { PlayerIteratorResult } from '@Src/makePlayersIterator';
 import { Player } from '@Src/types';
 import seenPlayersStore from '@Src/seenPlayersStore';
+import resultsStore from '@Src/resultsStore';
 import shuffle from '@Src/shuffle';
 import GlobalStyle from '@App/styles/global';
 
@@ -27,6 +28,7 @@ import PlayerComponent from './Player';
 
 function App(): React.ReactElement {
   const selectionConfirmation = useRecoilValue(selectionConfirmationState);
+  const selectedTeam = useRecoilValue(selectedTeamState);
   const [player, setPlayer] = useRecoilState<Player | null>(playerSelector);
   const { loading, error, players } = useFetchPlayers();
   const [currentPlayer, setCurrentPlayer] = useLocalStorage<Player>('currentPlayer');
@@ -47,20 +49,37 @@ function App(): React.ReactElement {
   });
 
   const handleSelectNextPlayer = React.useCallback(() => {
-    getNextPlayer().then(({ currentPlayer, nextPlayer }: PlayerIteratorResult) => {
-      if (currentPlayer) {
-        set(currentPlayer.id, currentPlayer.name, seenPlayersStore)
-          .then(() => {
-            if (nextPlayer) {
-              new Image().src = generatePlayerImageURL({ playerId: nextPlayer.id });
-            }
-          })
-          .then(() => setCurrentPlayer(currentPlayer))
-          .then(() => setPlayer(currentPlayer))
-          .catch((e) => console.log('unable to set player in index db', currentPlayer, e));
-      }
-    });
-  }, [getNextPlayer, setPlayer, setCurrentPlayer]);
+    return Promise.resolve()
+      .then(() => {
+        if (player) {
+          return set(
+            new Date().getTime(),
+            {
+              player,
+              selectedTeam,
+            },
+            resultsStore,
+          );
+        }
+        return null;
+      })
+      .then(() => {
+        getNextPlayer().then(({ currentPlayer, nextPlayer }: PlayerIteratorResult) => {
+          if (currentPlayer) {
+            set(currentPlayer.id, currentPlayer.name, seenPlayersStore)
+              .then(() => {
+                if (nextPlayer) {
+                  new Image().src = generatePlayerImageURL({ playerId: nextPlayer.id });
+                }
+              })
+              .then(() => setCurrentPlayer(currentPlayer))
+              .then(() => setPlayer(currentPlayer))
+              .catch((e) => console.log('unable to set player in indexeddb', currentPlayer, e));
+          }
+        });
+      })
+      .catch((e) => console.log('unable to handle selecting next player', currentPlayer, e));
+  }, [player, selectedTeam, getNextPlayer, setPlayer, setCurrentPlayer, currentPlayer]);
 
   return (
     <>
