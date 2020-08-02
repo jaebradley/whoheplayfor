@@ -18,6 +18,7 @@ module.exports = {
   plugins: [
     new CleanWebpackPlugin(),
     new HtmlWebpackPlugin({
+      favicon: path.resolve(__dirname, '../../src/images/favicon-32x32.png'),
       title: 'Who He Play For?',
       template: path.resolve(__dirname, '../../src/index.html')
     }),
