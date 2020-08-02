@@ -24,6 +24,8 @@ type PlayerProps = {
 function Player({ players }: PlayerProps): React.ReactElement {
   const [currentPlayer, setCurrentPlayer] = useLocalStorage<Player>('currentPlayer');
   const [player, setPlayer] = useRecoilState<Player | null>(playerSelector);
+  const [isSkipFocused, setIsSkipFocused] = React.useState(false);
+
   const shuffledPlayers = React.useMemo(() => shuffle(players), [players]);
   const getNextPlayer = useGetNextPlayer({ players: shuffledPlayers });
 
@@ -55,6 +57,14 @@ function Player({ players }: PlayerProps): React.ReactElement {
     });
   }, [getNextPlayer, setPlayer, setCurrentPlayer]);
 
+  const handleFocusSkip = React.useCallback(() => {
+    setIsSkipFocused(true);
+  }, [setIsSkipFocused]);
+
+  const handleBlurSkip = React.useCallback(() => {
+    setIsSkipFocused(false);
+  }, [setIsSkipFocused]);
+
   if (!player) {
     return <div />;
   }
@@ -64,10 +74,15 @@ function Player({ players }: PlayerProps): React.ReactElement {
       <StyledPlayerDetails>
         <PlayerImage playerId={player.id} />
         <StyledName>{player.name}</StyledName>
+        <div
+          onMouseEnter={handleFocusSkip}
+          onMouseLeave={handleBlurSkip}
+          onFocus={handleFocusSkip}
+          onBlur={handleBlurSkip}
+        >
+          <StyledFastForward size="2rem" onClick={handleSelectClick} icon={ic_fast_forward} isFocused={isSkipFocused} />
+        </div>
       </StyledPlayerDetails>
-      <div>
-        <StyledFastForward size="2rem" onClick={handleSelectClick} icon={ic_fast_forward} />
-      </div>
     </StyledPlayer>
   );
 }
@@ -85,8 +100,8 @@ const StyledPlayerDetails = styled.div`
   border-radius: 50%;
   display: flex;
   flex-direction: column;
-  height: 10rem;
-  width: 10rem;
+  height: 11rem;
+  width: 11rem;
   justify-content: center;
 `;
 
@@ -98,8 +113,9 @@ const StyledName = styled.h5<{ theme: ThemeInterface }>`
   text-align: center;
 `;
 
-const StyledFastForward = styled(Icon)`
-  color: ${({ theme }) => theme.secondary};
+const StyledFastForward = styled(Icon)<{ isFocused: boolean }>`
+  color: ${({ theme }) => theme.primary};
+  opacity: ${({ isFocused }) => (isFocused ? null : 0.3)};
 `;
 
 export default Player;
