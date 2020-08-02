@@ -10,19 +10,14 @@ import { ic_replay } from 'react-icons-kit/md/ic_replay';
 import theme, { ThemeInterface } from '@App/styles/theme';
 import GitHubLogo from '@Images/github.svg';
 
-import History from './History';
-
 function Header({ className }: InferProps<typeof Header.propTypes>): React.ReactElement {
   return (
     <StyledHeader className={className || ''} theme={theme}>
       <StyledIcons>
-        <StyledIcon size="1.5rem" icon={ic_home} />
-        <StyledIcon size="1.5rem" icon={ic_info} />
-        <StyledIcon size="1.5rem" icon={ic_replay} />
+        <StyledIcon size="1.75rem" icon={ic_home} />
+        <StyledIcon size="1.75rem" icon={ic_info} />
+        <StyledIcon size="1.75rem" icon={ic_replay} />
       </StyledIcons>
-      <div>
-        <History />
-      </div>
       <a href="https://github.com/jaebradley/whoheplayfor" target="_blank" rel="noreferrer">
         <StyledGithubLogo />
       </a>
@@ -33,7 +28,7 @@ function Header({ className }: InferProps<typeof Header.propTypes>): React.React
 const StyledHeader = styled.header<{ theme: ThemeInterface }>`
   background-color: ${({ theme }) => theme.primary};
   display: flex;
-  height: 3rem;
+  height: 4rem;
   justify-content: space-between;
   padding: 0 1rem 0;
 `;

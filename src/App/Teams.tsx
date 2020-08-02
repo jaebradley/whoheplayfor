@@ -45,19 +45,46 @@ function Teams({ isDisabled }: { isDisabled: boolean }): React.ReactElement {
 const StyledTeamsWrapper = styled.div<{ isDisabled: boolean }>`
   align-items: center;
   display: flex;
+  flex-direction: column;
   opacity: ${({ isDisabled }) => (isDisabled ? 0.3 : 'none')};
   pointer-events: ${({ isDisabled }) => (isDisabled ? 'none' : 'all')};
 `;
 
 const StyledTeamListWrapper = styled.div`
-  padding-left: 2rem;
+  display: flex;
+  justify-content: center;
+  margin-top: 3rem;
   width: 100%;
+
+  @media (min-width: 320px) {
+    max-height: 15rem;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+
+  @media (min-width: 641px) {
+    max-height: initial;
+    overflow-y: initial;
+    overflow-x: initial;
+  }
 `;
 
 const StyledTeams = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fill, 4rem);
-  grid-gap: 1.5rem;
+  grid-gap: 2rem;
+
+  // https://stackoverflow.com/questions/6370690/media-queries-how-to-target-desktop-tablet-and-mobile
+  @media (min-width: 320px) {
+    grid-template-columns: repeat(3, 4rem);
+  }
+
+  @media (min-width: 641px) {
+    grid-template-columns: repeat(6, 4rem);
+  }
+
+  @media (min-width: 1025px) {
+    grid-template-columns: repeat(10, 4rem);
+  }
 `;
 
 export default Teams;

@@ -20,4 +20,9 @@ const searchTermState = atom({
   default: null,
 });
 
-export { playerState, selectedTeamState, selectionConfirmationState, searchTermState };
+const searchOpenState = atom({
+  key: 'searchOpenState',
+  default: false,
+});
+
+export { playerState, selectedTeamState, selectionConfirmationState, searchTermState, searchOpenState };

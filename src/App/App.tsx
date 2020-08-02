@@ -11,6 +11,7 @@ import useGetNextPlayer from '@App/hooks/useGetNextPlayer';
 import { selectedTeamState, selectionConfirmationState } from '@App/atoms';
 import { ThemeInterface } from '@App/styles/theme';
 import { playerSelector } from '@App/selectors';
+import History from '@App/History';
 
 import { PlayerIteratorResult } from '@Src/makePlayersIterator';
 import { Player } from '@Src/types';
@@ -98,7 +99,10 @@ function App(): React.ReactElement {
                   <StyledPlayerSection>
                     <PlayerComponent onSkip={handleSelectNextPlayer} player={player} />
                   </StyledPlayerSection>
-                  <Teams isDisabled={!!(player && selectionConfirmation)} />
+                  <Teams isDisabled={player && selectionConfirmation} />
+                  <StyledHistory>
+                    <History />
+                  </StyledHistory>
                 </StyledContent>
               )}
             </StyledMain>
@@ -113,7 +117,7 @@ function App(): React.ReactElement {
 const StyledApp = styled.div<{ theme: ThemeInterface }>`
   display: grid;
   grid-auto-flow: column;
-  grid-template-columns: 1fr 2fr 1fr;
+  grid-template-columns: auto 1fr auto;
   grid-template-rows: auto 1fr auto;
   height: 100vh;
 `;
@@ -133,7 +137,7 @@ const StyledMain = styled.main`
   display: grid;
   grid-column-start: 1;
   grid-column-end: 4;
-  grid-template-columns: 1fr 2fr 1fr;
+  grid-template-columns: auto 1fr auto;
 `;
 
 const StyledTransition = styled(CSSTransition)`
@@ -163,6 +167,7 @@ const StyledContent = styled.div<{ isDisabled: boolean }>`
   display: flex;
   flex-direction: column;
   grid-column: 2/3;
+  justify-content: space-around;
   opacity: ${({ isDisabled }) => (isDisabled ? 0.3 : 'none')};
   pointer-events: ${({ isDisabled }) => (isDisabled ? 'none' : 'all')};
 `;
@@ -171,8 +176,13 @@ const StyledPlayerSection = styled.section`
   align-items: center;
   display: flex;
   justify-content: center;
-  padding-top: 1rem;
-  padding-bottom: 1rem;
+  margin-bottom: 3rem;
+`;
+
+const StyledHistory = styled.div`
+  display: flex;
+  justify-content: center;
+  margin-top: 3rem;
 `;
 
 const StyledHeader = styled(Header)`
