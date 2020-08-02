@@ -5,7 +5,7 @@ import { Player } from '@Src/types';
 
 export default function useFetchPlayers(): { loading: boolean; error: Error; players: Player[] } {
   const { loading, error, data } = useFetch(
-    'https://cors-anywhere.herokuapp.com/https://stats.nba.com/stats/leagueLeaders?LeagueID=00&PerMode=Totals&Scope=S&Season=2019-20&SeasonType=Regular+Season&StatCategory=MIN',
+    `https://cors-anywhere.herokuapp.com/https://stats.nba.com/stats/leagueLeaders?LeagueID=00&PerMode=Totals&Scope=S&Season=${process.env.SEASON}&SeasonType=Regular+Season&StatCategory=MIN`,
     {},
     [],
   );

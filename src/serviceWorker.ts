@@ -18,12 +18,18 @@ clientsClaim();
 precacheAndRoute(self.__WB_MANIFEST || []);
 
 registerRoute(
-  ({ url }) => url.origin === 'https://cors-anywhere.herokuapp.com',
+  ({ url }) =>
+    url.origin === 'https://cors-anywhere.herokuapp.com' &&
+    url.pathname.startsWith('/https://stats.nba.com/stats/leagueLeaders'),
   new CacheFirst({
     cacheName: CacheName.Data,
     plugins: [
       new CacheableResponsePlugin({
         statuses: [0, 200],
+      }),
+      new ExpirationPlugin({
+        // Only cache requests for a day
+        maxAgeSeconds: 24 * 60 * 60,
       }),
     ],
   }),
