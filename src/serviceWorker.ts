@@ -8,6 +8,7 @@ import { ExpirationPlugin } from 'workbox-expiration';
 enum CacheName {
   Data = 'data-cache',
   TeamImages = 'team-images-cache',
+  PlayerImages = 'player-images-cache',
 }
 
 skipWaiting();
@@ -50,3 +51,19 @@ registerRoute(
     ],
   }),
 );
+
+registerRoute(
+  ({ url }) => url.origin === 'https://ak-static.cms.nba.com' && url.pathname.startsWith('/wp-content/uploads/headshots/nba/latest'),
+  new CacheFirst({
+    cacheName: CacheName.PlayerImages,
+    plugins: [
+      new CacheableResponsePlugin({
+        statuses: [0, 200],
+      }),
+      new ExpirationPlugin({
+        // Only cache requests for a week
+        maxAgeSeconds: 7 * 24 * 60 * 60,
+      }),
+    ],
+  }),
+)
