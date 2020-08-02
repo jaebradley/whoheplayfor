@@ -3,6 +3,8 @@ import { useRecoilValue, useRecoilState } from 'recoil';
 import styled from 'styled-components';
 import { Icon } from 'react-icons-kit';
 import { ic_close } from 'react-icons-kit/md/ic_close';
+import { ic_error } from 'react-icons-kit/md/ic_error';
+import { ic_thumb_up } from 'react-icons-kit/md/ic_thumb_up';
 
 import correctSelectionImages from '@Src/correctSelectionImageURLs';
 import incorrectSelectionImages from '@Src/incorrectSelectionImageURLs';
@@ -37,31 +39,36 @@ const Result: React.FunctionComponent = () => {
   const imageURL: string = selectionResult
     ? correctSelectionImages[Math.floor(Math.random() * correctSelectionImages.length)]
     : incorrectSelectionImages[Math.floor(Math.random() * incorrectSelectionImages.length)];
-  const resultMessage: string = selectionResult ? 'You got it right!' : 'You got it wrong!';
-  const playerTeamMessage = `${player?.name} plays for the ${playerTeam?.name}`;
+  const playerTeamMessage = `${player?.name} plays for the ${playerTeam?.name}${
+    selectionResult && selectedTeam ? '' : `, not the ${selectedTeam?.name}`
+  }`;
 
   return (
-    <StyledResult ref={resultRef} open={selectionConfirmation}>
+    <StyledResult ref={resultRef} open={selectionConfirmation} result={selectionResult}>
       <StyledContents>
         <StyledHeader>
-          <StyledIcon size="1.5rem" icon={ic_close} onClick={handleClose} />
+          <Icon size="1.5rem" icon={selectionResult ? ic_thumb_up : ic_error} />
+          <StyledClose size="1.5rem" icon={ic_close} onClick={handleClose} />
         </StyledHeader>
-        <p>{resultMessage}</p>
-        <p>{playerTeamMessage}</p>
-        <StyledImage src={imageURL} />
+        <StyledDescription>
+          <StyledMessage>{playerTeamMessage}</StyledMessage>
+          <StyledImage src={imageURL} />
+        </StyledDescription>
       </StyledContents>
     </StyledResult>
   );
 };
 
-const StyledResult = styled.dialog`
+const StyledResult = styled.dialog<{ result: boolean }>`
   background-color: ${({ theme }) => theme.primary};
-  color: ${({ theme }) => theme.secondary};
+  color: ${({ result, theme }) => (result ? theme.secondary : 'red')};
+  left: 50%;
+  margin: 0;
+  width: 20rem;
+  height: 20rem;
   position: fixed;
   top: 50%;
-  left: 50%;
   transform: translate(-50%, -50%);
-  margin: 0;
   z-index: 1;
 `;
 
@@ -70,22 +77,35 @@ const StyledContents = styled.div`
   align-items: center;
   display: flex;
   flex-direction: column;
+  height: 100%;
   justify-content: center;
 `;
 
 const StyledHeader = styled.div`
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
   width: 100%;
 `;
 
-const StyledIcon = styled(Icon)`
+const StyledClose = styled(Icon)`
   cursor: pointer;
 `;
 
 const StyledImage = styled.img`
   max-height: 15rem;
   max-width: 15rem;
+`;
+
+const StyledDescription = styled.div`
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  height: 100%;
+`;
+
+const StyledMessage = styled.p`
+  text-align: center;
 `;
 
 export default Result;
