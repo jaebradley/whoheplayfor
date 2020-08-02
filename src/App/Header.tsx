@@ -10,6 +10,8 @@ import { ic_replay } from 'react-icons-kit/md/ic_replay';
 import theme, { ThemeInterface } from '@App/styles/theme';
 import GitHubLogo from '@Images/github.svg';
 
+import History from './History';
+
 function Header({ className }: InferProps<typeof Header.propTypes>): React.ReactElement {
   return (
     <StyledHeader className={className || ''} theme={theme}>
@@ -18,6 +20,9 @@ function Header({ className }: InferProps<typeof Header.propTypes>): React.React
         <StyledIcon size="1.5rem" icon={ic_info} />
         <StyledIcon size="1.5rem" icon={ic_replay} />
       </StyledIcons>
+      <div>
+        <History />
+      </div>
       <a href="https://github.com/jaebradley/whoheplayfor" target="_blank" rel="noreferrer">
         <StyledGithubLogo />
       </a>

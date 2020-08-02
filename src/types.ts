@@ -44,3 +44,8 @@ export interface Team {
   readonly name: string;
   readonly abbreviation: string;
 }
+
+export interface StoredResult {
+  player: Player;
+  selectedTeam: Team | null;
+}
