@@ -2,60 +2,19 @@ import * as React from 'react';
 import styled from 'styled-components';
 import { Icon } from 'react-icons-kit';
 import { ic_fast_forward } from 'react-icons-kit/md/ic_fast_forward';
-import { useRecoilState } from 'recoil';
-import { useLocalStorage } from '@rehooks/local-storage';
-import { set } from 'idb-keyval';
 
-import seenPlayersStore from '@Src/seenPlayersStore';
 import { Player } from '@Src/types';
-import { PlayerIteratorResult } from '@Src/makePlayersIterator';
-import shuffle from '@Src/shuffle';
 
 import PlayerImage from '@App/PlayerImage';
-import generatePlayerImageURL from '@App/generatePlayerImageURL';
-import useGetNextPlayer from '@App/hooks/useGetNextPlayer';
 import { ThemeInterface } from '@App/styles/theme';
-import { playerSelector } from '@App/selectors';
 
 type PlayerProps = {
-  players: Array<Player>;
+  player: Player;
+  onSkip: () => void;
 };
 
-function Player({ players }: PlayerProps): React.ReactElement {
-  const [currentPlayer, setCurrentPlayer] = useLocalStorage<Player>('currentPlayer');
-  const [player, setPlayer] = useRecoilState<Player | null>(playerSelector);
+function Player({ player, onSkip }: PlayerProps): React.ReactElement {
   const [isSkipFocused, setIsSkipFocused] = React.useState(false);
-
-  const shuffledPlayers = React.useMemo(() => shuffle(players), [players]);
-  const getNextPlayer = useGetNextPlayer({ players: shuffledPlayers });
-
-  React.useEffect(() => {
-    if (currentPlayer && !player) {
-      try {
-        setPlayer(currentPlayer);
-      } catch (e) {
-        console.log('error', e, currentPlayer);
-      }
-    } else if (!player) {
-      handleSelectClick();
-    }
-  });
-
-  const handleSelectClick = React.useCallback(() => {
-    getNextPlayer().then(({ currentPlayer, nextPlayer }: PlayerIteratorResult) => {
-      if (currentPlayer) {
-        set(currentPlayer.id, currentPlayer.name, seenPlayersStore)
-          .then(() => {
-            if (nextPlayer) {
-              new Image().src = generatePlayerImageURL({ playerId: nextPlayer.id });
-            }
-          })
-          .then(() => setCurrentPlayer(currentPlayer))
-          .then(() => setPlayer(currentPlayer))
-          .catch((e) => console.log('unable to set player in index db', currentPlayer, e));
-      }
-    });
-  }, [getNextPlayer, setPlayer, setCurrentPlayer]);
 
   const handleFocusSkip = React.useCallback(() => {
     setIsSkipFocused(true);
@@ -80,7 +39,7 @@ function Player({ players }: PlayerProps): React.ReactElement {
           onFocus={handleFocusSkip}
           onBlur={handleBlurSkip}
         >
-          <StyledFastForward size="2rem" onClick={handleSelectClick} icon={ic_fast_forward} isFocused={isSkipFocused} />
+          <StyledFastForward size="2rem" onClick={onSkip} icon={ic_fast_forward} isFocused={isSkipFocused} />
         </div>
       </StyledPlayerDetails>
     </StyledPlayer>

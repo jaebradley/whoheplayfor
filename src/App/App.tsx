@@ -2,13 +2,21 @@ import * as React from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import styled from 'styled-components';
 import { CSSTransition, SwitchTransition } from 'react-transition-group';
+import { useLocalStorage } from '@rehooks/local-storage';
+import { set } from 'idb-keyval';
 
+import generatePlayerImageURL from '@App/generatePlayerImageURL';
 import useFetchPlayers from '@App/hooks/useFetchPlayers';
-import { playerState, selectionConfirmationState } from '@App/atoms';
-
-import { Player } from '@Src/types';
-import GlobalStyle from '@App/styles/global';
+import useGetNextPlayer from '@App/hooks/useGetNextPlayer';
+import { selectionConfirmationState } from '@App/atoms';
 import { ThemeInterface } from '@App/styles/theme';
+import { playerSelector } from '@App/selectors';
+
+import { PlayerIteratorResult } from '@Src/makePlayersIterator';
+import { Player } from '@Src/types';
+import seenPlayersStore from '@Src/seenPlayersStore';
+import shuffle from '@Src/shuffle';
+import GlobalStyle from '@App/styles/global';
 
 import Footer from './Footer';
 import Header from './Header';
@@ -19,25 +27,57 @@ import PlayerComponent from './Player';
 
 function App(): React.ReactElement {
   const selectionConfirmation = useRecoilValue(selectionConfirmationState);
-  const [player] = useRecoilState<Player | null>(playerState);
+  const [player, setPlayer] = useRecoilState<Player | null>(playerSelector);
   const { loading, error, players } = useFetchPlayers();
+  const [currentPlayer, setCurrentPlayer] = useLocalStorage<Player>('currentPlayer');
+
+  const shuffledPlayers = React.useMemo(() => shuffle(players), [players]);
+  const getNextPlayer = useGetNextPlayer({ players: shuffledPlayers });
+
+  React.useEffect(() => {
+    if (currentPlayer && !player) {
+      try {
+        setPlayer(currentPlayer);
+      } catch (e) {
+        console.log('error', e, currentPlayer);
+      }
+    } else if (!player) {
+      handleSelectNextPlayer();
+    }
+  });
+
+  const handleSelectNextPlayer = React.useCallback(() => {
+    getNextPlayer().then(({ currentPlayer, nextPlayer }: PlayerIteratorResult) => {
+      if (currentPlayer) {
+        set(currentPlayer.id, currentPlayer.name, seenPlayersStore)
+          .then(() => {
+            if (nextPlayer) {
+              new Image().src = generatePlayerImageURL({ playerId: nextPlayer.id });
+            }
+          })
+          .then(() => setCurrentPlayer(currentPlayer))
+          .then(() => setPlayer(currentPlayer))
+          .catch((e) => console.log('unable to set player in index db', currentPlayer, e));
+      }
+    });
+  }, [getNextPlayer, setPlayer, setCurrentPlayer]);
 
   return (
     <>
       <GlobalStyle />
       <StyledApp>
         {selectionConfirmation && <StyledOverlay />}
-        {selectionConfirmation && <Result />}
+        {selectionConfirmation && <Result onClose={handleSelectNextPlayer} />}
         <StyledHeader />
         <SwitchTransition mode="out-in">
           <StyledTransition key={String(!loading && !error)} timeout={500} unmountOnExit classNames="main-content">
             <StyledMain key="content">
-              {loading ? (
+              {loading || error || !player ? (
                 <StyledLoading />
               ) : (
                 <StyledContent isDisabled={selectionConfirmation}>
                   <StyledPlayerSection>
-                    <PlayerComponent players={players} />
+                    <PlayerComponent onSkip={handleSelectNextPlayer} player={player} />
                   </StyledPlayerSection>
                   <Teams isDisabled={!!(player && selectionConfirmation)} />
                 </StyledContent>
