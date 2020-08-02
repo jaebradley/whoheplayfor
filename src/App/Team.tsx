@@ -7,31 +7,47 @@ import { ic_check } from 'react-icons-kit/md/ic_check';
 import TeamLogo from '@App/TeamLogo';
 import { Team } from '@Src/types';
 import { selectedTeamState, selectionConfirmationState } from '@App/atoms';
+import useDetectClickOutsideComponent from '@App/hooks/useDetectClickOutsideComponent';
 
 function Team({ team, isDisabled }: { team: Team; isDisabled: boolean }): React.ReactElement {
+  const teamRef = React.useRef<HTMLDivElement>(null);
+
   const [isFocused, setIsFocused] = React.useState(false);
+
   const [selectedTeam, setSelectedTeam] = useRecoilState<Team | null>(selectedTeamState);
   const setSelectionConfirmation = useSetRecoilState(selectionConfirmationState);
+
+  const isSelected = React.useMemo(() => !!selectedTeam && selectedTeam.id === team.id, [selectedTeam, team]);
+
   const handleClick = React.useCallback(() => {
     if (!selectedTeam || (selectedTeam && team.id != selectedTeam.id)) {
       setSelectedTeam(team);
       setSelectionConfirmation(false);
     }
   }, [selectedTeam, setSelectedTeam, team, setSelectionConfirmation]);
+
   const handleConfirmationClick = React.useCallback(() => {
     setSelectionConfirmation(true);
   }, [setSelectionConfirmation]);
-  const isSelected = React.useMemo(() => !!selectedTeam && selectedTeam.id === team.id, [selectedTeam, team]);
+
+  const handleIsFocused = React.useCallback(() => {
+    setIsFocused(true);
+  }, [setIsFocused]);
+
+  const handleIsBlurred = React.useCallback(() => {
+    setIsFocused(false);
+  }, [setIsFocused]);
+
+  useDetectClickOutsideComponent({ ref: teamRef, onClick: handleIsBlurred });
+
   return (
-    <StyledTeam isDisabled={isDisabled}>
+    <StyledTeam ref={teamRef} isDisabled={isDisabled}>
       <StyledTeamLogoWrapper
         isSelected={isSelected}
-        onMouseEnter={() => {
-          setIsFocused(true);
-        }}
-        onMouseLeave={() => {
-          setIsFocused(false);
-        }}
+        onFocus={handleIsFocused}
+        onBlur={handleIsBlurred}
+        onMouseEnter={handleIsFocused}
+        onMouseLeave={handleIsBlurred}
       >
         <StyledTeamLogo isFocused={isFocused} team={team} size="3rem" onClick={handleClick} isSelected={isSelected} />
         {!isSelected && (

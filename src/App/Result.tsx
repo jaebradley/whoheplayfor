@@ -14,7 +14,7 @@ import TEAMS from '@Src/teams';
 import { playerState, selectedTeamState, selectionConfirmationState } from '@App/atoms';
 import useDetectClickOutsideComponent from '@App/hooks/useDetectClickOutsideComponent';
 
-const Result: React.FunctionComponent = () => {
+function Result({ onClose }: { onClose: () => void }): React.ReactElement {
   const resultRef = React.useRef<HTMLDialogElement>(null);
   const [selectionConfirmation, setSelectionConfirmation] = useRecoilState<boolean>(selectionConfirmationState);
   const player = useRecoilValue<Player | null>(playerState);
@@ -32,7 +32,8 @@ const Result: React.FunctionComponent = () => {
 
   const handleClose = React.useCallback(() => {
     setSelectionConfirmation(false);
-  }, [setSelectionConfirmation]);
+    onClose();
+  }, [setSelectionConfirmation, onClose]);
 
   useDetectClickOutsideComponent({ ref: resultRef, onClick: handleClose });
 
@@ -57,7 +58,7 @@ const Result: React.FunctionComponent = () => {
       </StyledContents>
     </StyledResult>
   );
-};
+}
 
 const StyledResult = styled.dialog<{ result: boolean }>`
   background-color: ${({ theme }) => theme.primary};
