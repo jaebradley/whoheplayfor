@@ -30,6 +30,7 @@ const StyledHeader = styled.header<{ theme: ThemeInterface }>`
   display: flex;
   height: 3rem;
   justify-content: space-between;
+  padding: 0 1rem 0;
 `;
 
 const StyledIcons = styled.div`
