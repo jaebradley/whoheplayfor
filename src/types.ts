@@ -48,4 +48,5 @@ export interface Team {
 export interface StoredResult {
   player: Player;
   selectedTeam: Team | null;
+  createdAt: number;
 }

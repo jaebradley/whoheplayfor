@@ -57,7 +57,7 @@ const StyledTeamListWrapper = styled.div`
   width: 100%;
 
   @media (min-width: 320px) {
-    max-height: 15rem;
+    max-height: 17rem;
     overflow-y: auto;
     overflow-x: hidden;
   }
