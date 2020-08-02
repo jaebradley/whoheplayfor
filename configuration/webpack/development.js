@@ -18,7 +18,8 @@ module.exports = merge(base, {
   },
   plugins: [
     new EnvironmentPlugin({
-      NODE_ENV: 'development'
+      NODE_ENV: 'development',
+      SEASON: '2019-20'
     }),
     new WebpackBuildNotifierPlugin({
       title: "Whoheplayfor Webpack Build",
