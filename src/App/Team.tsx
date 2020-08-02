@@ -41,7 +41,7 @@ function Team({ team, isDisabled }: { team: Team; isDisabled: boolean }): React.
   useDetectClickOutsideComponent({ ref: teamRef, onClick: handleIsBlurred });
 
   return (
-    <StyledTeam ref={teamRef} isDisabled={isDisabled}>
+    <StyledTeam ref={teamRef} isDisabled={isDisabled} role="button" tabIndex={isDisabled ? undefined : 0}>
       <StyledTeamLogoWrapper
         isSelected={isSelected}
         onFocus={handleIsFocused}

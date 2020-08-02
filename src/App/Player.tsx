@@ -34,6 +34,8 @@ function Player({ player, onSkip }: PlayerProps): React.ReactElement {
         <PlayerImage playerId={player.id} remSize={5} />
         <StyledName>{player.name}</StyledName>
         <div
+          role="button"
+          tabIndex={0}
           onMouseEnter={handleFocusSkip}
           onMouseLeave={handleBlurSkip}
           onFocus={handleFocusSkip}
