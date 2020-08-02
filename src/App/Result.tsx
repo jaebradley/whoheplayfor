@@ -62,6 +62,7 @@ function Result({ onClose }: { onClose: () => void }): React.ReactElement {
 
 const StyledResult = styled.dialog<{ result: boolean }>`
   background-color: ${({ theme }) => theme.primary};
+  border: 1px solid ${({ result, theme }) => (result ? theme.secondary : 'red')};
   color: ${({ result, theme }) => (result ? theme.secondary : 'red')};
   left: 50%;
   margin: 0;

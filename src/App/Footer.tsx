@@ -25,7 +25,7 @@ function Footer({ className }: InferProps<typeof Footer.propTypes>): React.React
 
 const StyledFooter = styled.footer`
   background-color: ${({ theme }) => theme.primary};
-  height: 3rem;
+  height: 4rem;
 `;
 
 const StyledTextWrapper = styled.div`

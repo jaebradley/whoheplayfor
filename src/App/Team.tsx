@@ -75,6 +75,15 @@ const StyledTeam = styled.div<{ isDisabled: boolean }>`
   justify-content: center;
   position: relative;
   width: 4rem;
+
+  @media (min-width: 320px) {
+    display: ${({ isDisabled }) => (isDisabled ? 'none' : null)};
+  }
+
+  @media (min-width: 641px) {
+    display: inherit;
+  }
+
   ${(props) =>
     props.isDisabled &&
     css`

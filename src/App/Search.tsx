@@ -5,11 +5,11 @@ import { Icon } from 'react-icons-kit';
 import { ic_delete } from 'react-icons-kit/md/ic_delete';
 
 import { ThemeInterface } from '@App/styles/theme';
-import { searchTermState } from '@App/atoms';
+import { searchTermState, searchOpenState } from '@App/atoms';
 
 function Search(): React.ReactElement {
   const [searchTerm, setSearchTerm] = useRecoilState<string | null>(searchTermState);
-  const [isOpen, setIsOpen] = React.useState(false);
+  const [isOpen, setIsOpen] = useRecoilState<boolean>(searchOpenState);
   const handleOnChange = React.useCallback(
     (e) => {
       setSearchTerm(e.target.value);
