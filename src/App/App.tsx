@@ -26,6 +26,8 @@ function App(): React.ReactElement {
     <>
       <GlobalStyle />
       <StyledApp>
+        {selectionConfirmation && <StyledOverlay />}
+        {selectionConfirmation && <Result />}
         <StyledHeader />
         <SwitchTransition mode="out-in">
           <StyledTransition key={String(!loading && !error)} timeout={500} unmountOnExit classNames="main-content">
@@ -33,7 +35,7 @@ function App(): React.ReactElement {
               {loading ? (
                 <StyledLoading />
               ) : (
-                <StyledContent>
+                <StyledContent isDisabled={selectionConfirmation}>
                   <StyledPlayerSection>
                     <PlayerComponent players={players} />
                   </StyledPlayerSection>
@@ -56,6 +58,17 @@ const StyledApp = styled.div<{ theme: ThemeInterface }>`
   grid-template-columns: 1fr 2fr 1fr;
   grid-template-rows: auto 1fr auto;
   height: 100vh;
+`;
+
+const StyledOverlay = styled.div`
+  height: 100vh;
+  left: 0;
+  opacity: 0.3;
+  pointer-events: none;
+  position: fixed;
+  top: 0;
+  width: 100vw;
+  z-index: 2;
 `;
 
 const StyledMain = styled.main`
@@ -88,10 +101,12 @@ const StyledTransition = styled(CSSTransition)`
   }
 `;
 
-const StyledContent = styled.div`
+const StyledContent = styled.div<{ isDisabled: boolean }>`
   display: flex;
   flex-direction: column;
   grid-column: 2/3;
+  opacity: ${({ isDisabled }) => (isDisabled ? 0.3 : 'none')};
+  pointer-events: ${({ isDisabled }) => (isDisabled ? 'none' : 'all')};
 `;
 
 const StyledPlayerSection = styled.section`
