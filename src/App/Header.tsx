@@ -2,7 +2,6 @@ import * as React from 'react';
 import styled from 'styled-components';
 import * as PropTypes from 'prop-types';
 import { InferProps } from 'prop-types';
-import { Icon } from 'react-icons-kit';
 
 import theme, { ThemeInterface } from '@App/styles/theme';
 import GitHubLogo from '@Images/github.svg';
