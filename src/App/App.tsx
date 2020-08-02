@@ -34,7 +34,8 @@ function App(): React.ReactElement {
   const { loading, error, players } = useFetchPlayers();
   const [currentPlayer, setCurrentPlayer] = useLocalStorage<Player>('currentPlayer');
 
-  const shuffledPlayers = React.useMemo(() => shuffle(players), [players]);
+  const filteredPlayers = React.useMemo(() => players.slice(Math.floor(players.length / 2)), [players]);
+  const shuffledPlayers = React.useMemo(() => shuffle(filteredPlayers), [filteredPlayers]);
   const getNextPlayer = useGetNextPlayer({ players: shuffledPlayers });
 
   React.useEffect(() => {
