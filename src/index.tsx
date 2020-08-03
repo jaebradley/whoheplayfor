@@ -22,7 +22,8 @@ if (process.env.NODE_ENV !== 'development') {
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
       navigator.serviceWorker
-        .register('/serviceWorker.js')
+        // In production, jaebradley.github.io is the base URL so need to force it to fetch from the whoheplayfor repo
+        .register('/whoheplayfor/serviceWorker.js')
         .then((registration) => {
           console.log('SW registered', registration);
         })
