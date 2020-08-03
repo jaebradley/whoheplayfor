@@ -121,6 +121,7 @@ const StyledIterateResultIcon = styled(Icon)<{ isDisabled: boolean }>`
 const StyledPlayerDetails = styled.div`
   display: flex;
   flex-direction: column;
+  height: 11rem;
 `;
 
 const StyledPlayerResult = styled.div<{ result: boolean | null }>`
