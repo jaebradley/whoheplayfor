@@ -1,2 +1,0 @@
-(this.webpackJsonp=this.webpackJsonp||[]).push([[27],{126:function(t,n){var o;o=function(){return this}();try{o=o||new Function("return this")()}catch(t){"object"==typeof window&&(o=window)}t.exports=o}}]);
-//# sourceMappingURL=npm.webpack.2ff116e83f62ba913b62.js.map
