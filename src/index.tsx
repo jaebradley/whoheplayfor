@@ -6,12 +6,14 @@ import * as ReactDOM from 'react-dom';
 import { RecoilRoot } from 'recoil';
 import { ThemeProvider } from 'styled-components';
 import * as LogRocket from 'logrocket';
+import setupLogRocketReact = require('logrocket-react');
 
 import App from '@App/App';
 import theme from '@App/styles/theme';
 
 if (process.env.NODE_ENV !== 'development') {
   LogRocket.init('adwiki/whoheplayfor');
+  setupLogRocketReact(LogRocket);
 }
 
 ReactDOM.render(
