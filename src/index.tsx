@@ -5,9 +5,14 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { RecoilRoot } from 'recoil';
 import { ThemeProvider } from 'styled-components';
+import * as LogRocket from 'logrocket';
 
 import App from '@App/App';
 import theme from '@App/styles/theme';
+
+if (process.env.NODE_ENV !== 'development') {
+  LogRocket.init('adwiki/whoheplayfor');
+}
 
 ReactDOM.render(
   <RecoilRoot>
