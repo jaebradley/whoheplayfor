@@ -5,6 +5,7 @@
     "typescript"
   ],
  "plugins": [
+   "add-react-displayname",
    "react-hot-loader/babel",
    "@babel/plugin-proposal-optional-chaining"
  ]
